@@ -8,6 +8,73 @@ using System.Linq;
 
 public class CustomTerrain : MonoBehaviour {
 
+    public Texture2D heightMapImage;
+
+    public Vector2 randomHeightRange = new Vector2(0, 0.1f);
+
+    public Vector3 heightMapScale = new Vector3(1, 1, 1);
+
+    public Terrain terrain;
+
+    public TerrainData terrainData;
+
+    //Sets all heights to be 0
+    public void ResetTerrain()
+    {
+        float[,] heightMap;
+        heightMap = new float[terrainData.heightmapWidth, terrainData.heightmapHeight];
+        for (int x = 0; x < terrainData.heightmapWidth; x++)
+        {
+            for (int y = 0; y < terrainData.heightmapHeight; y++)
+            {
+                heightMap[x, y] = 0;
+            }
+        }
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    //Adds a random height to the current terrain height
+    public void RandomTerrain()
+    {
+        float[,] heightMap = terrainData.GetHeights(0, 0,
+                                terrainData.heightmapWidth,
+                                terrainData.heightmapHeight);
+        for (int x = 0; x < terrainData.heightmapWidth; x++)
+        {
+            for (int y = 0; y < terrainData.heightmapHeight; y++)
+            {
+                heightMap[x, y] += UnityEngine.Random.Range(randomHeightRange.x, randomHeightRange.y);
+            }
+        }
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    //Loads height data from an image
+    public void LoadTexture()
+    {
+        float[,] heightMap;
+        heightMap = new float[terrainData.heightmapWidth, terrainData.heightmapHeight];
+        for (int x = 0; x < terrainData.heightmapWidth; x++)
+        {
+            for (int y = 0; y < terrainData.heightmapHeight; y++)
+            {
+                heightMap[x, y] = heightMapImage.GetPixel((int)(x * heightMapScale.x),
+                                                          (int)(y * heightMapScale.z)).grayscale
+                                                          * heightMapScale.y;
+            }
+        }
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+
+    void OnEnable()
+    {
+        Debug.Log("Initialising Terrain Data");
+        terrain = this.GetComponent<Terrain>();
+        //TODO: Change this to terrainData = terrain.terrainData for use with multiple terrain objects
+        terrainData = Terrain.activeTerrain.terrainData;
+    }
+
     void Awake()
     {
         //Get tag database

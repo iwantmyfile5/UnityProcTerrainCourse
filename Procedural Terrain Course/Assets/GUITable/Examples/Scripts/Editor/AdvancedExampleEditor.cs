@@ -8,15 +8,15 @@ using EditorGUITable;
 [CustomEditor(typeof(AdvancedExample))]
 public class AdvancedExampleEditor : Editor 
 {
+    GUITableState tableState;
 
-	GUITableState tableState;
 
-	void OnEnable ()
+    void OnEnable ()
 	{
 		tableState = new GUITableState("tableState_Advanced");
 	}
 
-	public override void OnInspectorGUI ()
+    public override void OnInspectorGUI ()
 	{
 		GUILayout.Label ("Default display", EditorStyles.boldLabel);
 

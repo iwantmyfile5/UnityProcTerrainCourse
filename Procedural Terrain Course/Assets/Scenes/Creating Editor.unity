@@ -139,7 +139,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.55
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -263,6 +263,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d10703f055ca34b98f5d9b8287eabd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heightMapImage: {fileID: 2800000, guid: 842eec72d43eac14d8e83c87ff2d94e5, type: 3}
+  randomHeightRange: {x: 0, y: 0.1}
+  heightMapScale: {x: 2, y: 0.5, z: 2}
+  terrain: {fileID: 820236030}
+  terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
 --- !u!1 &1373247022
 GameObject:
   m_ObjectHideFlags: 0
