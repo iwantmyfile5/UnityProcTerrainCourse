@@ -16,7 +16,7 @@ public class CustomTerrain : MonoBehaviour {
     public Texture2D heightMapImage;
 
     //------------ Vectors ----------------------------
-    public Vector2 randomHeightRange = new Vector2(0, 0.1f);
+    public Vector2 randomHeightRange = new Vector2(0, 0.3f);
     public Vector3 heightMapScale = new Vector3(1, 1, 1);
 
 
@@ -47,6 +47,9 @@ public class CustomTerrain : MonoBehaviour {
     {
         new PerlinParameters()
     };
+
+    //---------------- Voronoi ---------------------
+    public Vector2 voronoiHeightRange = new Vector2(0, 0.1f);
 
     //----------- Terrain and TerrainData ---------------------
     public Terrain terrain;
@@ -184,6 +187,37 @@ public class CustomTerrain : MonoBehaviour {
     }
 
     #endregion Multiple Perlin Noise
+
+    public void Voronoi()
+    {
+        float[,] heightmap = GetHeightMap();
+        float falloff = 2f;
+        Vector3 peak = new Vector3(256, 0.2f, 256);
+            
+            //new Vector3(UnityEngine.Random.Range(0, terrainData.heightmapWidth),
+            //                       UnityEngine.Random.Range(0.0f, 1.0f),
+            //                       UnityEngine.Random.Range(0, terrainData.heightmapHeight)
+            //                       );
+
+        heightmap[(int)peak.x, (int)peak.z] = peak.y;
+
+        //Adjust terrain surrounding the peak
+        Vector2 peakLocation = new Vector2(peak.x, peak.z);
+        float maxDistance = Vector2.Distance(new Vector2(0, 0), new Vector2(terrainData.heightmapWidth, terrainData.heightmapHeight));
+        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        {
+            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            {
+                if( !(x == peak.x && y == peak.y) )
+                {
+                    float distanceToPeak = Vector2.Distance(peakLocation, new Vector2(x, y)) * falloff;
+                    heightmap[x, y] = peak.y - (distanceToPeak / maxDistance);
+                }
+            }
+        }
+
+        terrainData.SetHeights(0, 0, heightmap);
+    }
 
     #endregion
     //============================================= Initialization Functions ==============================================

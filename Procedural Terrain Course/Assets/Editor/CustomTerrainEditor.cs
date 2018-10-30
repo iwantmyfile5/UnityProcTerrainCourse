@@ -32,6 +32,7 @@ public class CustomTerrainEditor : Editor {
     GUITableState perlinParameterTable;
     SerializedProperty perlinParameters;
 
+
     #endregion Properties
     //--------------------------- Foldouts --------------------------------
     #region Foldouts
@@ -40,6 +41,7 @@ public class CustomTerrainEditor : Editor {
     bool showLoadHeights = false;
     bool showPerlinNoise = false;
     bool showMultiplePerlin = false;
+    bool showVoronoi = false;
 
     #endregion Foldouts
 
@@ -165,6 +167,18 @@ public class CustomTerrainEditor : Editor {
                 terrain.MultiplePerlinTerrain();
             }
 
+        }
+        #endregion
+
+        #region Voronoi
+        //Drives foldout display for Random Heights Section
+        showVoronoi = EditorGUILayout.Foldout(showVoronoi, "Voronoi");
+        if (showVoronoi)
+        {
+            if (GUILayout.Button("Voronoi"))
+            {
+                terrain.Voronoi();
+            }
         }
         #endregion
 
