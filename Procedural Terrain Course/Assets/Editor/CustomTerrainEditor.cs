@@ -7,25 +7,64 @@ using EditorGUITable;
 
 
 public class CustomTerrainEditor : Editor {
+    //======================================= Variables =============================================
+    #region Variables
 
+    //--------------------------- Properties -------------------------------
     #region Properties
-    //Properties-----------
+
+    //--------- Reset Terrain --------------
+    SerializedProperty resetTerrain;
+    //--------- Random Heights -------------
     SerializedProperty randomHeightRange;
+    //--------- Load Texture --------------
     SerializedProperty heightMapScale;
     SerializedProperty heightMapImage;
-    #endregion
+    //--------- Perlin Noise --------------
+    SerializedProperty perlinXScale;
+    SerializedProperty perlinYScale;
+    SerializedProperty perlinOffsetX;
+    SerializedProperty perlinOffsetY;
+    SerializedProperty perlinOctaves;
+    SerializedProperty perlinPersistance;
+    SerializedProperty perlinHeightScale;
+    //---- Multiple Perline Noise --------
+    GUITableState perlinParameterTable;
+    SerializedProperty perlinParameters;
 
+    #endregion Properties
+    //--------------------------- Foldouts --------------------------------
     #region Foldouts
-    //Foldouts-------------
+
     bool showRandom = false;
     bool showLoadHeights = false;
-    #endregion
+    bool showPerlinNoise = false;
+    bool showMultiplePerlin = false;
+
+    #endregion Foldouts
+
+    #endregion Variables
 
     void OnEnable()
     {
+        //--------- Reset Terrain --------------
+        resetTerrain = serializedObject.FindProperty("resetTerrain");
+        //--------- Random Heights --------------
         randomHeightRange = serializedObject.FindProperty("randomHeightRange");
+        //--------- Load Texture --------------
         heightMapScale = serializedObject.FindProperty("heightMapScale");
         heightMapImage = serializedObject.FindProperty("heightMapImage");
+        //--------- Perlin Noise --------------
+        perlinXScale = serializedObject.FindProperty("perlinXScale");
+        perlinYScale = serializedObject.FindProperty("perlinYScale");
+        perlinOffsetX = serializedObject.FindProperty("perlinOffsetX");
+        perlinOffsetY = serializedObject.FindProperty("perlinOffsetY");
+        perlinOctaves = serializedObject.FindProperty("perlinOctaves");
+        perlinPersistance = serializedObject.FindProperty("perlinPersistance");
+        perlinHeightScale = serializedObject.FindProperty("perlinHeightScale");
+        //---- Multiple Perline Noise --------
+        perlinParameterTable = new GUITableState("perlinParameterTable");
+        perlinParameters = serializedObject.FindProperty("perlinParameters");
     }
 
     public override void OnInspectorGUI()
@@ -33,7 +72,11 @@ public class CustomTerrainEditor : Editor {
         serializedObject.Update();
 
         CustomTerrain terrain = (CustomTerrain)target;
+        // Reset terrain toggle button -- Controls whether functions will reset the terrain before running or
+        // add their values to existing terrain data
+        EditorGUILayout.PropertyField(resetTerrain);
 
+        #region Reset Terrain
         //Reset the terrain heights to 0
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Label("Reset All Heights To 0", EditorStyles.boldLabel);
@@ -41,7 +84,9 @@ public class CustomTerrainEditor : Editor {
         {
             terrain.ResetTerrain();
         }
+        #endregion
 
+        #region Random Heights
         //Drives foldout display for Random Heights Section
         showRandom = EditorGUILayout.Foldout(showRandom, "Random");
         if(showRandom)
@@ -54,7 +99,9 @@ public class CustomTerrainEditor : Editor {
                 terrain.RandomTerrain();
             }
         }
+        #endregion
 
+        #region Load From Texture
         //Drives foldout display for Load Texture Section
         showLoadHeights = EditorGUILayout.Foldout(showLoadHeights, "Load From Texture");
         if (showLoadHeights)
@@ -68,17 +115,60 @@ public class CustomTerrainEditor : Editor {
                 terrain.LoadTexture();
             }
         }
+        #endregion
+
+        #region Single Perlin Noise
+        //Drives foldout for Single Perlin Noise Section
+        showPerlinNoise = EditorGUILayout.Foldout(showPerlinNoise, "Single Perlin Noise");
+        if (showPerlinNoise)
+        {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Use Perlin Noise to Generate Heights", EditorStyles.boldLabel);
+            EditorGUILayout.Slider(perlinXScale, 0, .05f, new GUIContent("X Scale"));
+            EditorGUILayout.Slider(perlinYScale, 0, .05f, new GUIContent("Y Scale"));
+            EditorGUILayout.IntSlider(perlinOffsetX, 0, 10000, new GUIContent("X Offset"));
+            EditorGUILayout.IntSlider(perlinOffsetY, 0, 10000, new GUIContent("Y Offset"));
+            EditorGUILayout.IntSlider(perlinOctaves, 1, 10, new GUIContent("Octaves"));
+            EditorGUILayout.Slider(perlinPersistance, 0.1f, 10, new GUIContent("Persistance"));
+            EditorGUILayout.Slider(perlinHeightScale, 0, 1, new GUIContent("Height Scale"));
+
+            if (GUILayout.Button("Perlin"))
+            {
+                terrain.Perlin();
+            }
+        }
+
+        #endregion
+
+        #region Multiple Perlin Noise
+
+        showMultiplePerlin = EditorGUILayout.Foldout(showMultiplePerlin, "Multiple Perlin Noise");
+        if(showMultiplePerlin)
+        {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Multiple Perlin Noise", EditorStyles.boldLabel);
+            //Draw table for Perlin Layers
+            perlinParameterTable = GUITableLayout.DrawTable(perlinParameterTable, perlinParameters);
+            GUILayout.Space(20);                            // Add space for formatting
+            EditorGUILayout.BeginHorizontal();              //Start formatting horizontally
+            if(GUILayout.Button("+"))                       //Add layer button
+            {
+                terrain.AddNewPerlin();
+            }
+            if(GUILayout.Button("-"))                       //Remove layer button
+            {
+                terrain.RemovePerlin();
+            }
+            EditorGUILayout.EndHorizontal();                //Stop formatting horizontally
+            if(GUILayout.Button("Apply Multiple Perlin"))   //Apply the multiple layers of Perlin Noise
+            {
+                terrain.MultiplePerlinTerrain();
+            }
+
+        }
+        #endregion
 
         serializedObject.ApplyModifiedProperties();
     }
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

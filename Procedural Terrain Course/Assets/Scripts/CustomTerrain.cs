@@ -7,16 +7,65 @@ using System.Linq;
 [ExecuteInEditMode]
 
 public class CustomTerrain : MonoBehaviour {
-
+    //============================================= Terrain Variables =====================================================
+    #region Terrain Variables
+    //------------ Reset Terrain ----------------
+    public bool resetTerrain = true; // When true, all functions will overwrite existing terrain data
+                                     // When false, all functions will add heights to existing terrain data
+    //----------- Textures ----------------------
     public Texture2D heightMapImage;
 
+    //------------ Vectors ----------------------------
     public Vector2 randomHeightRange = new Vector2(0, 0.1f);
-
     public Vector3 heightMapScale = new Vector3(1, 1, 1);
 
-    public Terrain terrain;
 
+    //------------ Perlin Noise Variables ------------------------
+    public float perlinXScale = 0.01f;
+    public float perlinYScale = 0.01f;
+    public float perlinPersistance = 8f;
+    public float perlinHeightScale = 0.09f;
+    public int perlinOffsetX = 0;
+    public int perlinOffsetY = 0;
+    public int perlinOctaves = 3;
+
+    //------------ Multiple Perlin Noise Variables ------------------------
+    [System.Serializable]
+    public class PerlinParameters
+    {
+        public float mPerlinXScale = 0.01f;
+        public float mPerlinYScale = 0.01f;
+        public float mPerlinPersistance = 8f;
+        public float mPerlinHeightScale = 0.09f;
+        public int mPerlinOffsetX = 0;
+        public int mPerlinOffsetY = 0;
+        public int mPerlinOctaves = 3;
+        public bool remove = false;
+    }
+
+    public List<PerlinParameters> perlinParameters = new List<PerlinParameters>()
+    {
+        new PerlinParameters()
+    };
+
+    //----------- Terrain and TerrainData ---------------------
+    public Terrain terrain;
     public TerrainData terrainData;
+    #endregion
+    //============================================= Terrain Functions =====================================================
+    #region Terrain Functions
+
+    //Creates a new, blank heightmap or gets the existing heightmap depending on
+    //if we want to reset the terrain or not
+    float[,] GetHeightMap()
+    {
+        if (!resetTerrain)
+        {
+            return terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+        }
+        else
+            return new float[terrainData.heightmapWidth, terrainData.heightmapHeight];
+    }
 
     //Sets all heights to be 0
     public void ResetTerrain()
@@ -36,9 +85,7 @@ public class CustomTerrain : MonoBehaviour {
     //Adds a random height to the current terrain height
     public void RandomTerrain()
     {
-        float[,] heightMap = terrainData.GetHeights(0, 0,
-                                terrainData.heightmapWidth,
-                                terrainData.heightmapHeight);
+        float[,] heightMap = GetHeightMap();
         for (int x = 0; x < terrainData.heightmapWidth; x++)
         {
             for (int y = 0; y < terrainData.heightmapHeight; y++)
@@ -52,13 +99,12 @@ public class CustomTerrain : MonoBehaviour {
     //Loads height data from an image
     public void LoadTexture()
     {
-        float[,] heightMap;
-        heightMap = new float[terrainData.heightmapWidth, terrainData.heightmapHeight];
+        float[,] heightMap = GetHeightMap();
         for (int x = 0; x < terrainData.heightmapWidth; x++)
         {
             for (int y = 0; y < terrainData.heightmapHeight; y++)
             {
-                heightMap[x, y] = heightMapImage.GetPixel((int)(x * heightMapScale.x),
+                heightMap[x, y] += heightMapImage.GetPixel((int)(x * heightMapScale.x),
                                                           (int)(y * heightMapScale.z)).grayscale
                                                           * heightMapScale.y;
             }
@@ -66,7 +112,82 @@ public class CustomTerrain : MonoBehaviour {
         terrainData.SetHeights(0, 0, heightMap);
     }
 
+    //Generates heights from a single Perlin Noise layer using Fractal Brownian Method
+    public void Perlin()
+    {
+        float[,] heightMap = GetHeightMap();
 
+        //Assign heights using Fractal Brownian Motion function
+        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        {
+            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            {
+                heightMap[x, y] += Utils.fBM( (x + perlinOffsetX) * perlinXScale,
+                                             (y + perlinOffsetY) * perlinYScale,
+                                             perlinOctaves,
+                                             perlinPersistance) * perlinHeightScale; //perlinHeightScale gives extra control over the final height
+                                                                                // without it, the terrain would be able to reach the max height set by Unity
+            }
+        }
+
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    //Generates heights from multiple Perlin Noise layers using Fractal Brownian Method
+    #region Multiple Perlin Noise
+    public void MultiplePerlinTerrain()
+    {
+        float[,] heightMap = GetHeightMap();
+
+        //Assign heights using Fractal Brownian Motion function for each layer of Perlin Noise
+        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        {
+            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            {
+                foreach (PerlinParameters p in perlinParameters)
+                {
+                    heightMap[x, y] += Utils.fBM((x + p.mPerlinOffsetX) * p.mPerlinXScale,
+                                                 (y + p.mPerlinOffsetY) * p.mPerlinYScale,
+                                                 p.mPerlinOctaves,
+                                                 p.mPerlinPersistance) * p.mPerlinHeightScale; //perlinHeightScale gives extra control over the final height
+                                                                                               // without it, the terrain would be able to reach the max height set by Unity
+                }
+                
+            }
+        }
+
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    //Adds another Perlin layer
+    public void AddNewPerlin()
+    {
+        perlinParameters.Add(new PerlinParameters());
+    }
+
+    //Removes all layers that are marked for removal
+    public void RemovePerlin()
+    {
+        List<PerlinParameters> keptPerlinParameters = new List<PerlinParameters>();
+        for (int i = 0; i < perlinParameters.Count; i++)
+        {
+            if(!perlinParameters[i].remove)
+            {
+                keptPerlinParameters.Add(perlinParameters[i]);
+            }
+        }
+        if (keptPerlinParameters.Count == 0) //If we don't want to keep any
+        {
+            keptPerlinParameters.Add(perlinParameters[0]); //We keep the first one because GUITable Layout wants at least one entry
+        }
+        perlinParameters = keptPerlinParameters;
+    }
+
+    #endregion Multiple Perlin Noise
+
+    #endregion
+    //============================================= Initialization Functions ==============================================
+    #region Initialization Functions
     void OnEnable()
     {
         Debug.Log("Initialising Terrain Data");
@@ -128,4 +249,5 @@ public class CustomTerrain : MonoBehaviour {
 	void Update () {
 		
 	}
+    #endregion
 }
