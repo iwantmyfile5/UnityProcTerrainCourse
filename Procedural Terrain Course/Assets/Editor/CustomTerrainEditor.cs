@@ -31,7 +31,12 @@ public class CustomTerrainEditor : Editor {
     //---- Multiple Perline Noise --------
     GUITableState perlinParameterTable;
     SerializedProperty perlinParameters;
-
+    //---------- Voronoi ----------------
+    SerializedProperty numPeaks;
+    SerializedProperty falloff;
+    SerializedProperty dropOff;
+    SerializedProperty minHeight;
+    SerializedProperty maxHeight;
 
     #endregion Properties
     //--------------------------- Foldouts --------------------------------
@@ -67,6 +72,12 @@ public class CustomTerrainEditor : Editor {
         //---- Multiple Perline Noise --------
         perlinParameterTable = new GUITableState("perlinParameterTable");
         perlinParameters = serializedObject.FindProperty("perlinParameters");
+        //---------- Voronoi ----------------
+        numPeaks = serializedObject.FindProperty("numPeaks");
+        falloff = serializedObject.FindProperty("falloff");
+        dropOff = serializedObject.FindProperty("dropOff");
+        minHeight = serializedObject.FindProperty("minHeight");
+        maxHeight = serializedObject.FindProperty("maxHeight");
     }
 
     public override void OnInspectorGUI()
@@ -175,6 +186,14 @@ public class CustomTerrainEditor : Editor {
         showVoronoi = EditorGUILayout.Foldout(showVoronoi, "Voronoi");
         if (showVoronoi)
         {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Generate Mountains using Voronoi Tesselation", EditorStyles.boldLabel);
+            EditorGUILayout.IntSlider(numPeaks, 1, 100, new GUIContent("Peak Count"));
+            EditorGUILayout.Slider(falloff, 0, 10, new GUIContent("Falloff"));
+            EditorGUILayout.Slider(dropOff, 0, 5, new GUIContent("Drop Off"));
+            EditorGUILayout.Slider(minHeight, 0, .7f, new GUIContent("Min Height"));
+            EditorGUILayout.Slider(maxHeight, .1f, 1, new GUIContent("Max Height"));
+
             if (GUILayout.Button("Voronoi"))
             {
                 terrain.Voronoi();

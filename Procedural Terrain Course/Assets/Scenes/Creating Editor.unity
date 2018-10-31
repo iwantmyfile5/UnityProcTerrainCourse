@@ -299,7 +299,11 @@ MonoBehaviour:
     mPerlinOffsetY: 0
     mPerlinOctaves: 3
     remove: 0
-  voronoiHeightRange: {x: 0.3, y: 0.7}
+  numPeaks: 9
+  falloff: 2
+  dropOff: 0.6
+  minHeight: 0.3
+  maxHeight: 0.6
   terrain: {fileID: 820236030}
   terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
 --- !u!1 &1373247022

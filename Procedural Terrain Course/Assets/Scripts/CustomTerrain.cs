@@ -49,7 +49,11 @@ public class CustomTerrain : MonoBehaviour {
     };
 
     //---------------- Voronoi ---------------------
-    public Vector2 voronoiHeightRange = new Vector2(0, 0.1f);
+    public int numPeaks = 5;
+    public float falloff = 2f;
+    public float dropOff = 0.6f;
+    public float minHeight = 0.3f;
+    public float maxHeight = 0.6f;
 
     //----------- Terrain and TerrainData ---------------------
     public Terrain terrain;
@@ -191,31 +195,37 @@ public class CustomTerrain : MonoBehaviour {
     public void Voronoi()
     {
         float[,] heightmap = GetHeightMap();
-        float falloff = 2f;
-        Vector3 peak = new Vector3(256, 0.2f, 256);
-            
-            //new Vector3(UnityEngine.Random.Range(0, terrainData.heightmapWidth),
-            //                       UnityEngine.Random.Range(0.0f, 1.0f),
-            //                       UnityEngine.Random.Range(0, terrainData.heightmapHeight)
-            //                       );
-
-        heightmap[(int)peak.x, (int)peak.z] = peak.y;
-
-        //Adjust terrain surrounding the peak
-        Vector2 peakLocation = new Vector2(peak.x, peak.z);
         float maxDistance = Vector2.Distance(new Vector2(0, 0), new Vector2(terrainData.heightmapWidth, terrainData.heightmapHeight));
-        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        //Loop through to create each peak
+        Debug.Log(numPeaks);
+        for (int i = 0; i < numPeaks; i++)
         {
-            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            
+            Vector3 peak = new Vector3(UnityEngine.Random.Range(0, terrainData.heightmapWidth),
+                                       UnityEngine.Random.Range(minHeight, maxHeight),
+                                       UnityEngine.Random.Range(0, terrainData.heightmapHeight)
+                                       );
+            heightmap[(int)peak.x, (int)peak.z] = peak.y;
+            //Adjust terrain surrounding the peak
+            Vector2 peakLocation = new Vector2(peak.x, peak.z);
+            //Loop through surrounding terrain
+            for (int y = 0; y < terrainData.heightmapHeight; y++)
             {
-                if( !(x == peak.x && y == peak.y) )
+                for (int x = 0; x < terrainData.heightmapWidth; x++)
                 {
-                    float distanceToPeak = Vector2.Distance(peakLocation, new Vector2(x, y)) * falloff;
-                    heightmap[x, y] = peak.y - (distanceToPeak / maxDistance);
+                    if (!(x == peak.x && y == peak.y))
+                    {
+                        float distanceToPeak = Vector2.Distance(peakLocation, new Vector2(x, y)) / maxDistance;
+                        float h = peak.y - distanceToPeak * falloff - Mathf.Pow(distanceToPeak, dropOff);
+                        //Prevents us from overwritng other peaks with flat land
+                        if (h > heightmap[x,y])
+                        {
+                            heightmap[x, y] = h;
+                        }
+                    }
                 }
             }
         }
-
         terrainData.SetHeights(0, 0, heightmap);
     }
 
