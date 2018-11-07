@@ -49,11 +49,13 @@ public class CustomTerrain : MonoBehaviour {
     };
 
     //---------------- Voronoi ---------------------
-    public int numPeaks = 5;
-    public float falloff = 2f;
-    public float dropOff = 0.6f;
-    public float minHeight = 0.3f;
-    public float maxHeight = 0.6f;
+    public int voronoiPeaks = 5;
+    public float voronoiFallOff = 0.2f;
+    public float voronoiDropOff = 0.6f;
+    public float voronoiMinHeight = 0.1f;
+    public float voronoiMaxHeight = 0.5f;
+    public enum VoronoiType {  Linear = 0, Power = 1, Combined = 2, PowerSin = 3 }
+    public VoronoiType voronoiType = VoronoiType.Linear;
 
     //----------- Terrain and TerrainData ---------------------
     public Terrain terrain;
@@ -197,17 +199,22 @@ public class CustomTerrain : MonoBehaviour {
         float[,] heightmap = GetHeightMap();
         float maxDistance = Vector2.Distance(new Vector2(0, 0), new Vector2(terrainData.heightmapWidth, terrainData.heightmapHeight));
         //Loop through to create each peak
-        Debug.Log(numPeaks);
-        for (int i = 0; i < numPeaks; i++)
+        for (int i = 0; i < voronoiPeaks; i++)
         {
             
             Vector3 peak = new Vector3(UnityEngine.Random.Range(0, terrainData.heightmapWidth),
-                                       UnityEngine.Random.Range(minHeight, maxHeight),
+                                       UnityEngine.Random.Range(voronoiMinHeight, voronoiMaxHeight),
                                        UnityEngine.Random.Range(0, terrainData.heightmapHeight)
                                        );
-            heightmap[(int)peak.x, (int)peak.z] = peak.y;
+            //Prevents divots if therrain is already raised
+            if (heightmap[(int)peak.x, (int)peak.z] < peak.y)
+                heightmap[(int)peak.x, (int)peak.z] = peak.y;
+            else
+                continue;
+
             //Adjust terrain surrounding the peak
             Vector2 peakLocation = new Vector2(peak.x, peak.z);
+
             //Loop through surrounding terrain
             for (int y = 0; y < terrainData.heightmapHeight; y++)
             {
@@ -216,7 +223,16 @@ public class CustomTerrain : MonoBehaviour {
                     if (!(x == peak.x && y == peak.y))
                     {
                         float distanceToPeak = Vector2.Distance(peakLocation, new Vector2(x, y)) / maxDistance;
-                        float h = peak.y - distanceToPeak * falloff - Mathf.Pow(distanceToPeak, dropOff);
+                        float h;
+                        if (voronoiType == VoronoiType.Combined) //Combined function
+                            h = peak.y - distanceToPeak * voronoiFallOff - Mathf.Pow(distanceToPeak, voronoiDropOff);
+                        else if (voronoiType == VoronoiType.Power)
+                            h = peak.y - Mathf.Pow(distanceToPeak, voronoiDropOff) * voronoiFallOff; // Power function
+                        else if (voronoiType == VoronoiType.PowerSin)
+                            h = peak.y - Mathf.Pow(distanceToPeak * 3, voronoiFallOff) - Mathf.Sin(distanceToPeak * 2 * Mathf.PI) / voronoiDropOff;
+                        else
+                            h = peak.y - distanceToPeak * voronoiFallOff; //Linear function
+
                         //Prevents us from overwritng other peaks with flat land
                         if (h > heightmap[x,y])
                         {
