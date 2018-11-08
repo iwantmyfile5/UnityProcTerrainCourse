@@ -62,6 +62,8 @@ public class CustomTerrain : MonoBehaviour {
     public float MPDheightMax = 10.0f;
     public float MPDheightDampenerPower = 2.0f;
     public float MPDroughness = 2.0f;
+    //-------------- Smooth ------------
+    public int smoothIterations = 1;
     
 
     //----------- Terrain and TerrainData ---------------------
@@ -83,6 +85,26 @@ public class CustomTerrain : MonoBehaviour {
             return new float[terrainData.heightmapWidth, terrainData.heightmapHeight];
     }
 
+    //Returns neighboring positions in a 2D array -- Only returns the position if it actually exists
+   List<Vector2> GenerateNeighbors(Vector2 pos, int width, int height)
+    {
+        List<Vector2> neighbors = new List<Vector2>();
+        for (int y = -1; y < 2; y++)
+        {
+            for (int x = -1; x < 2; x++)
+            {
+                if(!(x == 0 & y == 0))
+                {
+                    Vector2 nPos = new Vector2(Mathf.Clamp(pos.x + x, 0, width - 1),
+                                                Mathf.Clamp(pos.y + y, 0, height - 1));
+                    if (!neighbors.Contains(nPos))
+                        neighbors.Add(nPos);
+                }
+            }
+        }
+        return neighbors;
+    }
+
     //Sets all heights to be 0
     public void ResetTerrain()
     {
@@ -96,6 +118,38 @@ public class CustomTerrain : MonoBehaviour {
             }
         }
         terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    //Smooth out the terrain
+    public void Smooth()
+    {
+        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+        float smoothProgress = 0;
+        EditorUtility.DisplayProgressBar("Smoothing Terrain", "Progress", smoothProgress);
+
+        for (int i = 0; i < smoothIterations; i++)
+        {
+            
+            for (int y = 0; y < terrainData.heightmapHeight; y++)
+            {
+                for (int x = 0; x < terrainData.heightmapWidth; x++)
+                {
+                    float avgHeight = heightMap[x, y];
+                    List<Vector2> neighbors = GenerateNeighbors(new Vector2(x, y), terrainData.heightmapWidth, terrainData.heightmapHeight);
+                    foreach (Vector2 n in neighbors)
+                    {
+                        avgHeight += heightMap[(int)n.x, (int)n.y];
+                    }
+                    heightMap[x, y] = avgHeight / ((float)neighbors.Count + 1);
+                }
+            }
+
+            smoothProgress++;
+            EditorUtility.DisplayProgressBar("Smoothing Terrain", "Progress", smoothProgress / smoothIterations);
+
+        }
+         terrainData.SetHeights(0, 0, heightMap);
+        EditorUtility.ClearProgressBar();
     }
 
     //Adds a random height to the current terrain height

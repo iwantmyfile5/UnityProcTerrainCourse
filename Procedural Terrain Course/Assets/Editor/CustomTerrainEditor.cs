@@ -43,6 +43,8 @@ public class CustomTerrainEditor : Editor {
     SerializedProperty MPDheightMax;
     SerializedProperty MPDheightDampenerPower;
     SerializedProperty MPDroughness;
+    //----------- Smooth -----------------
+    SerializedProperty smoothIterations;
 
     #endregion Properties
     //--------------------------- Foldouts --------------------------------
@@ -91,6 +93,8 @@ public class CustomTerrainEditor : Editor {
         MPDheightMax = serializedObject.FindProperty("MPDheightMax");
         MPDheightDampenerPower = serializedObject.FindProperty("MPDheightDampenerPower");
         MPDroughness = serializedObject.FindProperty("MPDroughness");
+        //--------------- Smooth -------------
+        smoothIterations = serializedObject.FindProperty("smoothIterations");
     }
 
     public override void OnInspectorGUI()
@@ -101,7 +105,7 @@ public class CustomTerrainEditor : Editor {
         // Reset terrain toggle button -- Controls whether functions will reset the terrain before running or
         // add their values to existing terrain data
         EditorGUILayout.PropertyField(resetTerrain);
-
+        
         #region Reset Terrain
         //Reset the terrain heights to 0
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
@@ -109,6 +113,17 @@ public class CustomTerrainEditor : Editor {
         if (GUILayout.Button("Reset Terrain"))
         {
             terrain.ResetTerrain();
+        }
+        #endregion
+
+        #region Smooth Terrain
+        //Smooth out the terrain
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        GUILayout.Label("Smooth Terrain", EditorStyles.boldLabel);
+        EditorGUILayout.IntSlider(smoothIterations, 1, 10, new GUIContent("Iterations"));
+        if (GUILayout.Button("Smooth"))
+        {
+            terrain.Smooth();
         }
         #endregion
 

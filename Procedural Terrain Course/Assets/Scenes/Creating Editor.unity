@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d10703f055ca34b98f5d9b8287eabd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetTerrain: 1
+  resetTerrain: 0
   heightMapImage: {fileID: 2800000, guid: 842eec72d43eac14d8e83c87ff2d94e5, type: 3}
   randomHeightRange: {x: 0, y: 0.1}
   heightMapScale: {x: 2, y: 0.5, z: 2}
@@ -305,10 +305,11 @@ MonoBehaviour:
   voronoiMinHeight: 0.06
   voronoiMaxHeight: 0.22
   voronoiType: 3
-  MPDheightMin: -5
-  MPDheightMax: 5
+  MPDheightMin: -3
+  MPDheightMax: 3
   MPDheightDampenerPower: 2
   MPDroughness: 2
+  smoothIterations: 6
   terrain: {fileID: 820236030}
   terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
 --- !u!1 &1373247022
