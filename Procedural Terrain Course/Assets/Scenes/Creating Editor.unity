@@ -216,7 +216,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 3
   m_TerrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
-  m_TreeDistance: 5000
+  m_TreeDistance: 2000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -305,6 +305,10 @@ MonoBehaviour:
   voronoiMinHeight: 0.06
   voronoiMaxHeight: 0.22
   voronoiType: 3
+  MPDheightMin: -5
+  MPDheightMax: 5
+  MPDheightDampenerPower: 2
+  MPDroughness: 2
   terrain: {fileID: 820236030}
   terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
 --- !u!1 &1373247022
