@@ -310,6 +310,55 @@ MonoBehaviour:
   MPDheightDampenerPower: 2
   MPDroughness: 2
   smoothIterations: 6
+  splatHeights:
+  - texture: {fileID: 2800000, guid: 3a7915e2b99cd4d5a9f01b075f2ad6e9, type: 3}
+    minHeight: 0
+    maxHeight: 0.03
+    minSlope: 0
+    maxSlope: 90
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 10, y: 10}
+    splatXScale: 0.01
+    splatYScale: 0.013
+    splatScalar: 0.025
+    splatOffset: 0.01
+    remove: 0
+  - texture: {fileID: 2800000, guid: dd49ed99f55924d13bacefd240626bc5, type: 3}
+    minHeight: 0.03
+    maxHeight: 0.6
+    minSlope: 0
+    maxSlope: 45
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 10, y: 10}
+    splatXScale: 0.08
+    splatYScale: 0.01
+    splatScalar: 0.03
+    splatOffset: 0.01
+    remove: 0
+  - texture: {fileID: 2800000, guid: b3b656cca21f546f699d08c8ee074b8d, type: 3}
+    minHeight: 0
+    maxHeight: 0.6
+    minSlope: 25
+    maxSlope: 90
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 100, y: 100}
+    splatXScale: 0.012
+    splatYScale: 0.07
+    splatScalar: 0.02
+    splatOffset: 0.01
+    remove: 0
+  - texture: {fileID: 2800000, guid: fa749c6a04ad34af5af35082813d7df8, type: 3}
+    minHeight: 0.5
+    maxHeight: 1
+    minSlope: 0
+    maxSlope: 90
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 50, y: 50}
+    splatXScale: 0.093
+    splatYScale: 0.01
+    splatScalar: 0.035
+    splatOffset: 0.01
+    remove: 0
   terrain: {fileID: 820236030}
   terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
 --- !u!1 &1373247022

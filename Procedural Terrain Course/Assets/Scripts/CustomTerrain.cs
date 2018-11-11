@@ -64,6 +64,28 @@ public class CustomTerrain : MonoBehaviour {
     public float MPDroughness = 2.0f;
     //-------------- Smooth ------------
     public int smoothIterations = 1;
+    //------------- Splatmaps ---------------------
+    [System.Serializable]
+    public class SplatHeights
+    {
+        public Texture2D texture = null;
+        public float minHeight = 0.1f;
+        public float maxHeight = 0.2f;
+        public float minSlope = 0;
+        public float maxSlope = 90;
+        public Vector2 tileOffset = new Vector2(0, 0);
+        public Vector2 tileSize = new Vector2(50, 50);
+        public float splatXScale = 0.01f;
+        public float splatYScale = 0.01f;
+        public float splatScalar = .02f;
+        public float splatOffset = 0.01f;
+        public bool remove = false;
+    }
+    public List<SplatHeights> splatHeights = new List<SplatHeights>()
+    {
+        new SplatHeights()
+    };
+    
     
 
     //----------- Terrain and TerrainData ---------------------
@@ -404,6 +426,116 @@ public class CustomTerrain : MonoBehaviour {
 
         terrainData.SetHeights(0, 0, heightMap);
     }
+
+    #region Splatmaps
+    /* Custom GetSteepness Method --- Can be used in place of built in function
+    float GetSteepness(float[,] heightmap, int x, int y, int width, int height)
+    {
+        float h = heightmap[x, y];
+        int nx = x + 1;
+        int ny = y + 1;
+
+        //If on the upper edges of the map, find gradient by going backwards
+        if (nx > width - 1) nx = x - 1;
+        if (ny > height - 1) ny = y - 1;
+
+        float dx = heightmap[nx, y] - h;
+        float dy = heightmap[x, ny] - h;
+        Vector2 gradient = new Vector2(dx, dy);
+
+        float steep = gradient.magnitude;
+
+        return steep;
+    }
+    */
+    //Add textures to Splat Prototypes
+    public void SplatMaps()
+    {
+        SplatPrototype[] newSplatPrototypes;
+        newSplatPrototypes = new SplatPrototype[splatHeights.Count];
+        int spindex = 0;
+        foreach (SplatHeights sh in splatHeights)
+        {
+            newSplatPrototypes[spindex] = new SplatPrototype();
+            newSplatPrototypes[spindex].texture = sh.texture;
+            newSplatPrototypes[spindex].tileOffset = sh.tileOffset;
+            newSplatPrototypes[spindex].tileSize = sh.tileSize;
+            newSplatPrototypes[spindex].texture.Apply(true);
+            spindex++;
+        }
+        terrainData.splatPrototypes = newSplatPrototypes; //Applies textures to Terrain's list of textures
+
+        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+        float[,,] splatmapData = new float[terrainData.alphamapWidth, terrainData.alphamapHeight, terrainData.alphamapLayers];
+        for (int y = 0; y < terrainData.alphamapHeight; y++)
+        {
+            for (int x = 0; x < terrainData.alphamapWidth; x++)
+            {
+                float[] splat = new float[terrainData.alphamapLayers];
+                for (int i = 0; i < splatHeights.Count; i++)
+                {
+                    float noise = Mathf.PerlinNoise(x * splatHeights[i].splatXScale, y * splatHeights[i].splatYScale) * splatHeights[i].splatScalar;
+                    float offset = splatHeights[i].splatOffset + noise;
+                    float thisHeightStart = splatHeights[i].minHeight - offset;
+                    float thisHeightStop = splatHeights[i].maxHeight + offset;
+                    float steepness = terrainData.GetSteepness(y / (float)terrainData.alphamapHeight, x / (float)terrainData.alphamapWidth);
+                        //GetSteepness(heightMap, x, y,
+                        //                            terrainData.heightmapWidth, terrainData.heightmapHeight);
+
+                    if((heightMap[x,y] >= thisHeightStart && heightMap[x,y] <= thisHeightStop) &&
+                        (steepness >= splatHeights[i].minSlope && steepness <= splatHeights[i].maxSlope))
+                    {
+                        splat[i] = 1;
+                    }
+                }
+                NormalizeVector(splat);
+                for (int j = 0; j < splatHeights.Count; j++)
+                {
+                    splatmapData[x, y, j] = splat[j];
+                }
+            }
+        }
+        terrainData.SetAlphamaps(0, 0, splatmapData);
+    }
+    
+    void NormalizeVector(float[] v)
+    {
+        float total = 0;
+        for (int i = 0; i < v.Length; i++)
+        {
+            total += v[i];
+        }
+        for (int i = 0; i < v.Length; i++)
+        {
+            v[i] /= total;
+        }
+    }
+
+    //Adds another Splat Height layer
+    public void AddNewSplatHeight()
+    {
+        splatHeights.Add(new SplatHeights());
+    }
+
+    //Removes all layers that are marked for removal
+    public void RemoveSplatHeight()
+    {
+        List<SplatHeights> keptSplatHeights = new List<SplatHeights>();
+        for (int i = 0; i < splatHeights.Count; i++)
+        {
+            if (!splatHeights[i].remove)
+            {
+                keptSplatHeights.Add(splatHeights[i]);
+            }
+        }
+        if (keptSplatHeights.Count == 0) //If we don't want to keep any
+        {
+            keptSplatHeights.Add(splatHeights[0]); //We keep the first one because GUITable Layout wants at least one entry
+        }
+        splatHeights = keptSplatHeights;
+    }
+
+    #endregion
 
     #endregion
     //============================================= Initialization Functions ==============================================

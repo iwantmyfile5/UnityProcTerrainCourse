@@ -45,6 +45,13 @@ public class CustomTerrainEditor : Editor {
     SerializedProperty MPDroughness;
     //----------- Smooth -----------------
     SerializedProperty smoothIterations;
+    //----------- Splat Maps -------------
+    GUITableState splatMapTable;
+    SerializedProperty splatHeights;
+    //SerializedProperty splatXScale;
+    //SerializedProperty splatYScale;
+    //SerializedProperty splatScalar;
+    //SerializedProperty splatOffset;
 
     #endregion Properties
     //--------------------------- Foldouts --------------------------------
@@ -56,6 +63,7 @@ public class CustomTerrainEditor : Editor {
     bool showMultiplePerlin = false;
     bool showVoronoi = false;
     bool showMPD = false;
+    bool showSplatMaps = false;
 
     #endregion Foldouts
 
@@ -95,13 +103,26 @@ public class CustomTerrainEditor : Editor {
         MPDroughness = serializedObject.FindProperty("MPDroughness");
         //--------------- Smooth -------------
         smoothIterations = serializedObject.FindProperty("smoothIterations");
+        //----------- Splat Maps -------------
+        splatHeights = serializedObject.FindProperty("splatHeights");
+        //splatXScale = serializedObject.FindProperty("splatXScale");
+        //splatYScale = serializedObject.FindProperty("splatYScale");
+        //splatScalar = serializedObject.FindProperty("splatScalar");
+        //splatOffset = serializedObject.FindProperty("splatOffset");
     }
 
+    Vector2 scrollPos; //Track scrollbar position
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
         CustomTerrain terrain = (CustomTerrain)target;
+
+        //Start Scrollbar
+        Rect r = EditorGUILayout.BeginVertical();
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(r.width), GUILayout.Height(r.height));
+        EditorGUI.indentLevel++;
+
         // Reset terrain toggle button -- Controls whether functions will reset the terrain before running or
         // add their values to existing terrain data
         EditorGUILayout.PropertyField(resetTerrain);
@@ -247,6 +268,42 @@ public class CustomTerrainEditor : Editor {
             }
         }
         #endregion
+
+        #region Splatmaps
+
+        showSplatMaps = EditorGUILayout.Foldout(showSplatMaps, "Splat Maps");
+        if (showSplatMaps)
+        {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Splat Maps", EditorStyles.boldLabel);
+            //EditorGUILayout.Slider(splatXScale, 0.001f, .1f, new GUIContent("Noise X Scale"));
+            //EditorGUILayout.Slider(splatYScale, 0.001f, .1f, new GUIContent("Noise Y Scale"));
+            //EditorGUILayout.Slider(splatScalar, 0.001f, .5f, new GUIContent("Noise Multiplier"));
+            //EditorGUILayout.Slider(splatOffset, 0, .1f, new GUIContent("Blend Offset"));
+            //Draw table for Splat Map Layers
+            splatMapTable = GUITableLayout.DrawTable(splatMapTable, splatHeights);
+            GUILayout.Space(20);                            // Add space for formatting
+            EditorGUILayout.BeginHorizontal();              //Start formatting horizontally
+            if (GUILayout.Button("+"))                       //Add layer button
+            {
+                terrain.AddNewSplatHeight();
+            }
+            if (GUILayout.Button("-"))                       //Remove layer button
+            {
+                terrain.RemoveSplatHeight();
+            }
+            EditorGUILayout.EndHorizontal();                //Stop formatting horizontally
+            if (GUILayout.Button("Apply Splat Maps"))   //Apply the multiple layers of Perlin Noise
+            {
+                terrain.SplatMaps();
+            }
+
+        }
+        #endregion
+
+        //End Scrollbar
+        EditorGUILayout.EndScrollView();
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }
