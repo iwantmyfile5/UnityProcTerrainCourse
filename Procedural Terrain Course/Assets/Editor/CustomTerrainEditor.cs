@@ -52,6 +52,14 @@ public class CustomTerrainEditor : Editor {
     //SerializedProperty splatYScale;
     //SerializedProperty splatScalar;
     //SerializedProperty splatOffset;
+    //----------- Vegetation ------------
+    SerializedProperty vegetation;
+    SerializedProperty maxTrees;
+    SerializedProperty treeSpacing;
+    GUITableState vegetationTable;
+
+    
+
 
     #endregion Properties
     //--------------------------- Foldouts --------------------------------
@@ -64,6 +72,11 @@ public class CustomTerrainEditor : Editor {
     bool showVoronoi = false;
     bool showMPD = false;
     bool showSplatMaps = false;
+    bool showHeights = false;
+    bool showVegetation = false;
+
+    //--------- Height Map -------------
+    Texture2D hmTexture;
 
     #endregion Foldouts
 
@@ -109,6 +122,13 @@ public class CustomTerrainEditor : Editor {
         //splatYScale = serializedObject.FindProperty("splatYScale");
         //splatScalar = serializedObject.FindProperty("splatScalar");
         //splatOffset = serializedObject.FindProperty("splatOffset");
+
+        //--------- Height Map -------------
+        hmTexture = new Texture2D(513, 513, TextureFormat.ARGB32, false);
+        //--------- Vegetation -------------
+        vegetation = serializedObject.FindProperty("vegetation");
+        maxTrees = serializedObject.FindProperty("maxTrees");
+        treeSpacing = serializedObject.FindProperty("treeSpacing");
     }
 
     Vector2 scrollPos; //Track scrollbar position
@@ -299,6 +319,70 @@ public class CustomTerrainEditor : Editor {
             }
 
         }
+        #endregion
+
+        #region Heightmap
+
+        showHeights = EditorGUILayout.Foldout(showHeights, "Height Map");
+        if(showHeights)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            int hmtSize = (int)(EditorGUIUtility.currentViewWidth - 100);
+            GUILayout.Label(hmTexture, GUILayout.Width(hmtSize), GUILayout.Height(hmtSize));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Refresh", GUILayout.Width(hmtSize)))
+            {
+                float[,] heightMap = terrain.terrainData.GetHeights(0, 0, terrain.terrainData.heightmapWidth, terrain.terrainData.heightmapHeight);
+
+                for (int y = 0; y < terrain.terrainData.heightmapHeight; y++)
+                {
+                    for (int x = 0; x < terrain.terrainData.heightmapHeight; x++)
+                    {
+                        hmTexture.SetPixel(x, y, new Color(heightMap[x, y], heightMap[x, y], heightMap[x, y], 1));
+                    }
+                }
+                hmTexture.Apply();
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+        }
+
+        #endregion
+
+        #region Vegetation
+
+        showVegetation = EditorGUILayout.Foldout(showVegetation, "Vegetation");
+        if (showVegetation)
+        {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Vegetation", EditorStyles.boldLabel);
+
+            EditorGUILayout.IntSlider(maxTrees, 0, 10000, new GUIContent("Maximum Trees"));
+            EditorGUILayout.IntSlider(treeSpacing, 2, 20, new GUIContent("Tree Spacing"));
+           
+            vegetationTable = GUITableLayout.DrawTable(vegetationTable, vegetation);
+            GUILayout.Space(20);                            // Add space for formatting
+            EditorGUILayout.BeginHorizontal();              //Start formatting horizontally
+            if (GUILayout.Button("+"))                       //Add layer button
+            {
+                terrain.AddNewVegetation();
+            }
+            if (GUILayout.Button("-"))                       //Remove layer button
+            {
+                terrain.RemoveVegetation();
+            }
+            EditorGUILayout.EndHorizontal();                //Stop formatting horizontally
+            if (GUILayout.Button("Apply Vegetation"))   //Apply the multiple layers of Perlin Noise
+            {
+                terrain.PlantVegetation();
+            }
+
+        }
+
         #endregion
 
         //End Scrollbar

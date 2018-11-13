@@ -359,6 +359,21 @@ MonoBehaviour:
     splatScalar: 0.035
     splatOffset: 0.01
     remove: 0
+  vegetation:
+  - mesh: {fileID: 100000, guid: 2a44e858bd119bca11002b7b44295342, type: 3}
+    minHeight: 0
+    maxHeight: 0.05
+    minSlope: 0
+    maxSlope: 90
+    remove: 0
+  - mesh: {fileID: 100000, guid: 02e48269f8d554fbca75435761452392, type: 3}
+    minHeight: 0.05
+    maxHeight: 0.1
+    minSlope: 0
+    maxSlope: 90
+    remove: 0
+  maxTrees: 7696
+  treeSpacing: 18
   terrain: {fileID: 820236030}
   terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
 --- !u!1 &1373247022
