@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 820236030}
   - component: {fileID: 820236029}
   - component: {fileID: 820236032}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain
   m_TagString: Terrain
   m_Icon: {fileID: 0}
@@ -263,119 +263,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d10703f055ca34b98f5d9b8287eabd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetTerrain: 0
-  heightMapImage: {fileID: 2800000, guid: 842eec72d43eac14d8e83c87ff2d94e5, type: 3}
-  randomHeightRange: {x: 0, y: 0.1}
-  heightMapScale: {x: 2, y: 0.5, z: 2}
-  perlinXScale: 0.0001
-  perlinYScale: 0.0001
-  perlinPersistance: 2.64
-  perlinHeightScale: 0.602
+  resetTerrain: 1
+  heightMapImage: {fileID: 0}
+  randomHeightRange: {x: 0, y: 0.3}
+  heightMapScale: {x: 1, y: 1, z: 1}
+  perlinXScale: 0.01
+  perlinYScale: 0.01
+  perlinPersistance: 8
+  perlinHeightScale: 0.09
   perlinOffsetX: 0
   perlinOffsetY: 0
-  perlinOctaves: 7
+  perlinOctaves: 3
   perlinParameters:
-  - mPerlinXScale: 0.0025
-    mPerlinYScale: 0.0025
+  - mPerlinXScale: 0.01
+    mPerlinYScale: 0.01
     mPerlinPersistance: 8
-    mPerlinHeightScale: 0.15
-    mPerlinOffsetX: 0
-    mPerlinOffsetY: 0
-    mPerlinOctaves: 3
-    remove: 0
-  - mPerlinXScale: 0.001
-    mPerlinYScale: 0.001
-    mPerlinPersistance: 5
-    mPerlinHeightScale: 0.3
-    mPerlinOffsetX: 0
-    mPerlinOffsetY: 0
-    mPerlinOctaves: 3
-    remove: 0
-  - mPerlinXScale: 0.0005
-    mPerlinYScale: 0.0005
-    mPerlinPersistance: 3
-    mPerlinHeightScale: 0.6
+    mPerlinHeightScale: 0.09
     mPerlinOffsetX: 0
     mPerlinOffsetY: 0
     mPerlinOctaves: 3
     remove: 0
   voronoiPeaks: 5
-  voronoiFallOff: 10
-  voronoiDropOff: 10
-  voronoiMinHeight: 0.06
-  voronoiMaxHeight: 0.22
-  voronoiType: 3
-  MPDheightMin: -3
-  MPDheightMax: 3
+  voronoiFallOff: 0.2
+  voronoiDropOff: 0.6
+  voronoiMinHeight: 0.1
+  voronoiMaxHeight: 0.5
+  voronoiType: 0
+  MPDheightMin: -10
+  MPDheightMax: 10
   MPDheightDampenerPower: 2
   MPDroughness: 2
-  smoothIterations: 6
+  smoothIterations: 1
   splatHeights:
-  - texture: {fileID: 2800000, guid: 3a7915e2b99cd4d5a9f01b075f2ad6e9, type: 3}
-    minHeight: 0
-    maxHeight: 0.03
-    minSlope: 0
-    maxSlope: 90
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 10, y: 10}
-    splatXScale: 0.01
-    splatYScale: 0.013
-    splatScalar: 0.025
-    splatOffset: 0.01
-    remove: 0
-  - texture: {fileID: 2800000, guid: dd49ed99f55924d13bacefd240626bc5, type: 3}
-    minHeight: 0.03
-    maxHeight: 0.6
-    minSlope: 0
-    maxSlope: 45
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 10, y: 10}
-    splatXScale: 0.08
-    splatYScale: 0.01
-    splatScalar: 0.03
-    splatOffset: 0.01
-    remove: 0
-  - texture: {fileID: 2800000, guid: b3b656cca21f546f699d08c8ee074b8d, type: 3}
-    minHeight: 0
-    maxHeight: 0.6
-    minSlope: 25
-    maxSlope: 90
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 100, y: 100}
-    splatXScale: 0.012
-    splatYScale: 0.07
-    splatScalar: 0.02
-    splatOffset: 0.01
-    remove: 0
-  - texture: {fileID: 2800000, guid: fa749c6a04ad34af5af35082813d7df8, type: 3}
-    minHeight: 0.5
-    maxHeight: 1
+  - texture: {fileID: 0}
+    minHeight: 0.1
+    maxHeight: 0.2
     minSlope: 0
     maxSlope: 90
     tileOffset: {x: 0, y: 0}
     tileSize: {x: 50, y: 50}
-    splatXScale: 0.093
+    splatXScale: 0.01
     splatYScale: 0.01
-    splatScalar: 0.035
+    splatScalar: 0.02
     splatOffset: 0.01
     remove: 0
   vegetation:
-  - mesh: {fileID: 100000, guid: 2a44e858bd119bca11002b7b44295342, type: 3}
-    minHeight: 0
-    maxHeight: 0.05
-    minSlope: 0
-    maxSlope: 90
-    remove: 0
   - mesh: {fileID: 100000, guid: 02e48269f8d554fbca75435761452392, type: 3}
-    minHeight: 0.05
-    maxHeight: 0.1
+    minHeight: 0
+    maxHeight: 1
     minSlope: 0
-    maxSlope: 90
+    maxSlope: 30
+    minScale: 0.8
+    maxScale: 1
+    color1: {r: 1, g: 1, b: 1, a: 1}
+    color2: {r: 1, g: 1, b: 1, a: 1}
+    lightColor: {r: 0.8659438, g: 0.8773585, b: 0.44281775, a: 1}
+    minRotation: 0
+    maxRotation: 360
+    density: 0.8
     remove: 0
-  maxTrees: 7696
-  treeSpacing: 18
+  maxTrees: 8008
+  treeSpacing: 11
   terrain: {fileID: 820236030}
   terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
+  terrainLayer: 9
 --- !u!1 &1373247022
 GameObject:
   m_ObjectHideFlags: 0
