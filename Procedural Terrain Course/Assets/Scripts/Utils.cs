@@ -31,4 +31,18 @@ public static class Utils {
         //Brings result into the range of 0 to 1
         return total / maxValue;
     }
+
+    /// <summary>
+    /// Maps a value to a target range based on its original range.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="originalMin"></param>
+    /// <param name="originalMax"></param>
+    /// <param name="targetMin"></param>
+    /// <param name="targetMax"></param>
+    /// <returns></returns>
+    public static float Map(float value, float originalMin, float originalMax, float targetMin, float targetMax)
+    {
+        return (value - originalMin) * (targetMax - targetMin) / (originalMax - originalMin) + targetMin;
+    }
 }

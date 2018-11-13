@@ -113,264 +113,16 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &807773308
+--- !u!1 &1848957056
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 807773310}
-  - component: {fileID: 807773309}
-  m_Layer: 0
-  m_Name: Directional Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &807773309
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 807773308}
-  m_Enabled: 1
-  serializedVersion: 8
-  m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.55
-  m_Range: 10
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &807773310
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 807773308}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &820236028
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 820236031}
-  - component: {fileID: 820236030}
-  - component: {fileID: 820236029}
-  - component: {fileID: 820236032}
-  m_Layer: 0
-  m_Name: Terrain
-  m_TagString: Terrain
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!154 &820236029
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 820236028}
-  m_Material: {fileID: 0}
-  m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
-  m_EnableTreeColliders: 1
---- !u!218 &820236030
-Terrain:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 820236028}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_TerrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
-  m_TreeDistance: 2000
-  m_TreeBillboardDistance: 50
-  m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 80
-  m_DetailObjectDensity: 1
-  m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
-  m_HeightmapMaximumLOD: 0
-  m_CastShadows: 1
-  m_DrawHeightmap: 1
-  m_DrawTreesAndFoliage: 1
-  m_ReflectionProbeUsage: 1
-  m_MaterialType: 0
-  m_LegacySpecular:
-    serializedVersion: 2
-    rgba: 4286545791
-  m_LegacyShininess: 0.078125
-  m_MaterialTemplate: {fileID: 0}
-  m_BakeLightProbesForTrees: 1
-  m_PreserveTreePrototypeLayers: 0
-  m_ScaleInLightmap: 0.0512
-  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
---- !u!4 &820236031
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 820236028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &820236032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 820236028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09d10703f055ca34b98f5d9b8287eabd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetTerrain: 0
-  heightMapImage: {fileID: 2800000, guid: 842eec72d43eac14d8e83c87ff2d94e5, type: 3}
-  randomHeightRange: {x: 0, y: 0.1}
-  heightMapScale: {x: 2, y: 0.5, z: 2}
-  perlinXScale: 0.0001
-  perlinYScale: 0.0001
-  perlinPersistance: 2.64
-  perlinHeightScale: 0.602
-  perlinOffsetX: 0
-  perlinOffsetY: 0
-  perlinOctaves: 7
-  perlinParameters:
-  - mPerlinXScale: 0.0025
-    mPerlinYScale: 0.0025
-    mPerlinPersistance: 8
-    mPerlinHeightScale: 0.15
-    mPerlinOffsetX: 0
-    mPerlinOffsetY: 0
-    mPerlinOctaves: 3
-    remove: 0
-  - mPerlinXScale: 0.001
-    mPerlinYScale: 0.001
-    mPerlinPersistance: 5
-    mPerlinHeightScale: 0.3
-    mPerlinOffsetX: 0
-    mPerlinOffsetY: 0
-    mPerlinOctaves: 3
-    remove: 0
-  - mPerlinXScale: 0.0005
-    mPerlinYScale: 0.0005
-    mPerlinPersistance: 3
-    mPerlinHeightScale: 0.6
-    mPerlinOffsetX: 0
-    mPerlinOffsetY: 0
-    mPerlinOctaves: 3
-    remove: 0
-  voronoiPeaks: 5
-  voronoiFallOff: 10
-  voronoiDropOff: 10
-  voronoiMinHeight: 0.06
-  voronoiMaxHeight: 0.22
-  voronoiType: 3
-  MPDheightMin: -3
-  MPDheightMax: 3
-  MPDheightDampenerPower: 2
-  MPDroughness: 2
-  smoothIterations: 6
-  splatHeights:
-  - texture: {fileID: 2800000, guid: 3a7915e2b99cd4d5a9f01b075f2ad6e9, type: 3}
-    minHeight: 0
-    maxHeight: 0.03
-    minSlope: 0
-    maxSlope: 90
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 10, y: 10}
-    splatXScale: 0.01
-    splatYScale: 0.013
-    splatScalar: 0.025
-    splatOffset: 0.01
-    remove: 0
-  - texture: {fileID: 2800000, guid: dd49ed99f55924d13bacefd240626bc5, type: 3}
-    minHeight: 0.03
-    maxHeight: 0.6
-    minSlope: 0
-    maxSlope: 45
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 10, y: 10}
-    splatXScale: 0.08
-    splatYScale: 0.01
-    splatScalar: 0.03
-    splatOffset: 0.01
-    remove: 0
-  - texture: {fileID: 2800000, guid: b3b656cca21f546f699d08c8ee074b8d, type: 3}
-    minHeight: 0
-    maxHeight: 0.6
-    minSlope: 25
-    maxSlope: 90
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 100, y: 100}
-    splatXScale: 0.012
-    splatYScale: 0.07
-    splatScalar: 0.02
-    splatOffset: 0.01
-    remove: 0
-  - texture: {fileID: 2800000, guid: fa749c6a04ad34af5af35082813d7df8, type: 3}
-    minHeight: 0.5
-    maxHeight: 1
-    minSlope: 0
-    maxSlope: 90
-    tileOffset: {x: 0, y: 0}
-    tileSize: {x: 50, y: 50}
-    splatXScale: 0.093
-    splatYScale: 0.01
-    splatScalar: 0.035
-    splatOffset: 0.01
-    remove: 0
-  terrain: {fileID: 820236030}
-  terrainData: {fileID: 15600000, guid: 26e26a6e7a997d9409f913e12ada45f5, type: 2}
---- !u!1 &1373247022
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1373247025}
-  - component: {fileID: 1373247024}
-  - component: {fileID: 1373247023}
+  - component: {fileID: 1848957059}
+  - component: {fileID: 1848957058}
+  - component: {fileID: 1848957057}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -378,19 +130,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1373247023
+--- !u!81 &1848957057
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1373247022}
+  m_GameObject: {fileID: 1848957056}
   m_Enabled: 1
---- !u!20 &1373247024
+--- !u!20 &1848957058
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1373247022}
+  m_GameObject: {fileID: 1848957056}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -425,16 +177,212 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &1373247025
+--- !u!4 &1848957059
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1373247022}
-  m_LocalRotation: {x: -0.052905235, y: -0.93919647, z: -0.12273348, w: 0.3163028}
-  m_LocalPosition: {x: 483.5, y: 36.24, z: 456.38}
+  m_GameObject: {fileID: 1848957056}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -15.308001, y: -142.949, z: 1.291}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1872527896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1872527898}
+  - component: {fileID: 1872527897}
+  m_Layer: 0
+  m_Name: Directional Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!108 &1872527897
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1872527896}
+  m_Enabled: 1
+  serializedVersion: 8
+  m_Type: 1
+  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+--- !u!4 &1872527898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1872527896}
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1908677185
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1908677188}
+  - component: {fileID: 1908677187}
+  - component: {fileID: 1908677186}
+  - component: {fileID: 1908677189}
+  m_Layer: 0
+  m_Name: Terrain
+  m_TagString: Terrain
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!154 &1908677186
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1908677185}
+  m_Material: {fileID: 0}
+  m_Enabled: 1
+  m_TerrainData: {fileID: 15600000, guid: 2825f8ad090c6ed4b8fdb6b6ae494a9b, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &1908677187
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1908677185}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_TerrainData: {fileID: 15600000, guid: 2825f8ad090c6ed4b8fdb6b6ae494a9b, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMaximumLOD: 0
+  m_CastShadows: 1
+  m_DrawHeightmap: 1
+  m_DrawTreesAndFoliage: 1
+  m_ReflectionProbeUsage: 1
+  m_MaterialType: 0
+  m_LegacySpecular:
+    serializedVersion: 2
+    rgba: 4286545791
+  m_LegacyShininess: 0.078125
+  m_MaterialTemplate: {fileID: 0}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_ScaleInLightmap: 0.0512
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!4 &1908677188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1908677185}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1908677189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1908677185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d10703f055ca34b98f5d9b8287eabd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetTerrain: 1
+  heightMapImage: {fileID: 2800000, guid: 3a2c70009b27f444292c9bba5ac34bab, type: 3}
+  randomHeightRange: {x: 0, y: 0.3}
+  heightMapScale: {x: 1, y: 1, z: 1}
+  perlinXScale: 0.01
+  perlinYScale: 0.01
+  perlinPersistance: 8
+  perlinHeightScale: 0.09
+  perlinOffsetX: 0
+  perlinOffsetY: 0
+  perlinOctaves: 3
+  perlinParameters:
+  - mPerlinXScale: 0.01
+    mPerlinYScale: 0.01
+    mPerlinPersistance: 8
+    mPerlinHeightScale: 0.09
+    mPerlinOffsetX: 0
+    mPerlinOffsetY: 0
+    mPerlinOctaves: 3
+    remove: 0
+  voronoiPeaks: 5
+  voronoiFallOff: 0.2
+  voronoiDropOff: 0.6
+  voronoiMinHeight: 0.1
+  voronoiMaxHeight: 0.5
+  voronoiType: 0
+  MPDheightMin: -10
+  MPDheightMax: 10
+  MPDheightDampenerPower: 2
+  MPDroughness: 2
+  smoothIterations: 4
+  splatHeights:
+  - texture: {fileID: 0}
+    minHeight: 0.1
+    maxHeight: 0.2
+    minSlope: 0
+    maxSlope: 90
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 50, y: 50}
+    splatXScale: 0.01
+    splatYScale: 0.01
+    splatScalar: 0.02
+    splatOffset: 0.01
+    remove: 0
+  terrain: {fileID: 1908677187}
+  terrainData: {fileID: 15600000, guid: 2825f8ad090c6ed4b8fdb6b6ae494a9b, type: 2}
