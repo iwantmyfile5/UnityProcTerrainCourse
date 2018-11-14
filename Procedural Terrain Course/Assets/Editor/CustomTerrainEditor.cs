@@ -57,8 +57,16 @@ public class CustomTerrainEditor : Editor {
     SerializedProperty maxTrees;
     SerializedProperty treeSpacing;
     GUITableState vegetationTable;
+    //----------- Details ------------
+    GUITableState detailsTable;
+    SerializedProperty details;
+    SerializedProperty maxDetails;
+    SerializedProperty detailSpacing;
+    //-------- Water -------------
+    SerializedProperty waterHeight;
+    SerializedProperty waterGameObject;
+    SerializedProperty shoreLineMaterial;
 
-    
 
 
     #endregion Properties
@@ -74,11 +82,13 @@ public class CustomTerrainEditor : Editor {
     bool showSplatMaps = false;
     bool showHeights = false;
     bool showVegetation = false;
+    bool showDetails = false;
+    bool showWater = false;
+
+    #endregion Foldouts
 
     //--------- Height Map -------------
     Texture2D hmTexture;
-
-    #endregion Foldouts
 
     #endregion Variables
 
@@ -129,6 +139,14 @@ public class CustomTerrainEditor : Editor {
         vegetation = serializedObject.FindProperty("vegetation");
         maxTrees = serializedObject.FindProperty("maxTrees");
         treeSpacing = serializedObject.FindProperty("treeSpacing");
+        //--------- Details ---------------
+        details = serializedObject.FindProperty("details");
+        maxDetails = serializedObject.FindProperty("maxDetails");
+        detailSpacing = serializedObject.FindProperty("detailSpacing");
+        //-------- Water -------------
+        waterHeight = serializedObject.FindProperty("waterHeight");
+        waterGameObject = serializedObject.FindProperty("waterGameObject");
+        shoreLineMaterial = serializedObject.FindProperty("shoreLineMaterial");
     }
 
     Vector2 scrollPos; //Track scrollbar position
@@ -381,6 +399,63 @@ public class CustomTerrainEditor : Editor {
                 terrain.PlantVegetation();
             }
 
+        }
+
+        #endregion
+
+        #region Details
+
+        showDetails = EditorGUILayout.Foldout(showDetails, "Details");
+        if (showDetails)
+        {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Details", EditorStyles.boldLabel);
+
+            EditorGUILayout.IntSlider(maxDetails, 0, 2000, new GUIContent("Details View Distance"));
+            EditorGUILayout.IntSlider(detailSpacing, 2, 20, new GUIContent("Detail Spacing"));
+
+            terrain.GetComponent<Terrain>().detailObjectDistance = maxDetails.intValue; //Change view distance
+            detailsTable = GUITableLayout.DrawTable(detailsTable, details);
+            GUILayout.Space(20);                            // Add space for formatting
+            EditorGUILayout.BeginHorizontal();              //Start formatting horizontally
+            if (GUILayout.Button("+"))                       //Add layer button
+            {
+                terrain.AddNewDetail();
+            }
+            if (GUILayout.Button("-"))                       //Remove layer button
+            {
+                terrain.RemoveDetail();
+            }
+            EditorGUILayout.EndHorizontal();                //Stop formatting horizontally
+            if (GUILayout.Button("Apply Details"))   //Apply the multiple layers of Perlin Noise
+            {
+                terrain.PlaceDetails();
+            }
+
+        }
+
+        #endregion
+
+        #region Water
+
+        showWater = EditorGUILayout.Foldout(showWater, "Water");
+        if(showWater)
+        {
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            GUILayout.Label("Water", EditorStyles.boldLabel);
+            EditorGUILayout.Slider(waterHeight, 0, 1, new GUIContent("Water Height"));
+            EditorGUILayout.PropertyField(waterGameObject);
+
+            if(GUILayout.Button("Add Water"))
+            {
+                terrain.AddWater();
+            }
+
+            EditorGUILayout.PropertyField(shoreLineMaterial);
+            if(GUILayout.Button("Add Shore Line"))
+            {
+                terrain.DrawShoreLine();
+            }
         }
 
         #endregion
