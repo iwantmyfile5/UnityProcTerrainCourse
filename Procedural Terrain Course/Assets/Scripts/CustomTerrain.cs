@@ -147,6 +147,16 @@ public class CustomTerrain : MonoBehaviour {
     public GameObject waterGameObject;
     public Material shoreLineMaterial;
 
+    //--------- Erosion -----------
+    public enum ErosionType {  Rain = 0, Thermal = 1, Tidal = 2, River = 3, Wind = 4 }
+    public ErosionType erosionType = ErosionType.Rain;
+    public float erosionStrength = 0.1f;
+    public float erosionAmount = 0.02f;
+    public int springsPerRiver = 5;
+    public float solubility = 0.01f;
+    public int droplets = 10;
+    public int erosionSmoothAmount = 5;
+
     //----------- Terrain and TerrainData ---------------------
     public Terrain terrain;
     public TerrainData terrainData;
@@ -881,6 +891,81 @@ public class CustomTerrain : MonoBehaviour {
         {
             DestroyImmediate(shoreQuads[sQ]);
         }
+    }
+
+    #endregion
+
+    #region Erosion
+
+    public void Erode()
+    {
+        if (erosionType == ErosionType.Rain)
+            Rain();
+        else if (erosionType == ErosionType.Thermal)
+            Thermal();
+        else if (erosionType == ErosionType.Tidal)
+            Tidal();
+        else if (erosionType == ErosionType.River)
+            River();
+        else if (erosionType == ErosionType.Wind)
+            Wind();
+
+        smoothIterations = erosionSmoothAmount;
+        Smooth();
+        
+    }
+
+    public void Rain()
+    {
+        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+        for (int i = 0; i < droplets; i++)
+        {
+            int randX = UnityEngine.Random.Range(0, terrainData.heightmapWidth);
+            int randY = UnityEngine.Random.Range(0, terrainData.heightmapHeight);
+            heightMap[randX, randY] -= erosionStrength;
+        }
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    public void Thermal()
+    {
+        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+
+        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        {
+            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            {
+                Vector2 thisLocation = new Vector2(x, y);
+                List<Vector2> neighbors = GenerateNeighbors(thisLocation, terrainData.heightmapWidth, terrainData.heightmapHeight);
+
+                foreach (Vector2 n in neighbors)
+                {
+                    if(heightMap[x,y] > heightMap[(int)n.x, (int)n.y] + erosionStrength)
+                    {
+                        float currentHeight = heightMap[x, y];
+                        heightMap[x, y] -= currentHeight * erosionAmount;
+                        heightMap[(int)n.x, (int)n.y] += currentHeight * erosionAmount;
+                    }
+                }
+            }
+        }
+
+        terrainData.SetHeights(0, 0, heightMap);
+    }
+
+    public void Tidal()
+    {
+
+    }
+
+    public void Wind()
+    {
+
+    }
+
+    public void River()
+    {
+
     }
 
     #endregion
