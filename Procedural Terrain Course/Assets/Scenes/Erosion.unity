@@ -293,7 +293,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 3
   m_TerrainData: {fileID: 15600000, guid: 64d36f92e320e6745926c099ef70b51d, type: 2}
-  m_TreeDistance: 5000
+  m_TreeDistance: 2000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -361,11 +361,11 @@ MonoBehaviour:
     mPerlinOctaves: 3
     remove: 0
   voronoiPeaks: 5
-  voronoiFallOff: 0.2
-  voronoiDropOff: 0.6
-  voronoiMinHeight: 0.1
-  voronoiMaxHeight: 0.5
-  voronoiType: 0
+  voronoiFallOff: 0.55
+  voronoiDropOff: 0.85
+  voronoiMinHeight: 0.127
+  voronoiMaxHeight: 0.242
+  voronoiType: 1
   MPDheightMin: -5
   MPDheightMax: 5
   MPDheightDampenerPower: 2
@@ -374,14 +374,62 @@ MonoBehaviour:
   splatHeights:
   - texture: {fileID: 2800000, guid: b1114d03f7b0d4d07a72ad67e291b7af, type: 3}
     minHeight: 0
-    maxHeight: 1
+    maxHeight: 0.02
     minSlope: 0
+    maxSlope: 35
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 50, y: 50}
+    splatXScale: 0.001
+    splatYScale: 0.001
+    splatScalar: 0.05
+    splatOffset: 0.01
+    remove: 0
+  - texture: {fileID: 2800000, guid: 1e37030fd131446698e39f9f5a0159e6, type: 3}
+    minHeight: 0
+    maxHeight: 0.15
+    minSlope: 20
     maxSlope: 90
     tileOffset: {x: 0, y: 0}
     tileSize: {x: 50, y: 50}
     splatXScale: 0.01
     splatYScale: 0.01
-    splatScalar: 0.02
+    splatScalar: 0.1
+    splatOffset: 0.01
+    remove: 0
+  - texture: {fileID: 2800000, guid: 59aa96a28c32043de836d0d09ff9570e, type: 3}
+    minHeight: 0.5
+    maxHeight: 0.6
+    minSlope: 50
+    maxSlope: 90
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 50, y: 50}
+    splatXScale: 0.01
+    splatYScale: 0.01
+    splatScalar: 0.1
+    splatOffset: 0.01
+    remove: 0
+  - texture: {fileID: 2800000, guid: dd49ed99f55924d13bacefd240626bc5, type: 3}
+    minHeight: 0.05
+    maxHeight: 0.25
+    minSlope: 0
+    maxSlope: 60
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 50, y: 50}
+    splatXScale: 0.001
+    splatYScale: 0.001
+    splatScalar: 0.01
+    splatOffset: 0.01
+    remove: 0
+  - texture: {fileID: 2800000, guid: cbc6c8225a70e4475b3b2f20c8a7ec98, type: 3}
+    minHeight: 0.5
+    maxHeight: 0.5
+    minSlope: 0
+    maxSlope: 90
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 50, y: 50}
+    splatXScale: 0.02
+    splatYScale: 0.02
+    splatScalar: 0.4
     splatOffset: 0.01
     remove: 0
   vegetation:
@@ -421,15 +469,15 @@ MonoBehaviour:
     remove: 0
   maxDetails: 5000
   detailSpacing: 5
-  waterHeight: 0.5
-  waterGameObject: {fileID: 0}
-  shoreLineMaterial: {fileID: 0}
-  erosionType: 1
-  erosionStrength: 0.006
-  erosionAmount: 0.02
-  springsPerRiver: 5
-  solubility: 0.01
-  droplets: 264
+  waterHeight: 0.069
+  waterGameObject: {fileID: 100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
+  shoreLineMaterial: {fileID: 2100000, guid: 53e0a4a975f6eb94f8732350d217652d, type: 2}
+  erosionType: 5
+  erosionStrength: 0.96
+  erosionAmount: 0.0099
+  springsPerRiver: 11
+  solubility: 0.005
+  droplets: 169
   erosionSmoothAmount: 0
   terrain: {fileID: 2037049410}
   terrainData: {fileID: 15600000, guid: 64d36f92e320e6745926c099ef70b51d, type: 2}
