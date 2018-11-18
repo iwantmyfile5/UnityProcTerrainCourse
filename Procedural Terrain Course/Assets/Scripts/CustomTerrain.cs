@@ -899,7 +899,7 @@ public class CustomTerrain : MonoBehaviour {
 
     public void Erode()
     {
-        if (erosionType == ErosionType.Rain)
+             if (erosionType == ErosionType.Rain)
             Rain();
         else if (erosionType == ErosionType.Thermal)
             Thermal();
@@ -916,6 +916,8 @@ public class CustomTerrain : MonoBehaviour {
         Smooth();
         
     }
+
+    #region Main Erosion Functions
 
     public void Rain()
     {
@@ -1009,68 +1011,77 @@ public class CustomTerrain : MonoBehaviour {
         terrainData.SetHeights(0, 0, heightMap);
     }
 
+    //Apply wind erosion
     public void Wind()
     {
-        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
-        int width = terrainData.heightmapWidth;
-        int height = terrainData.heightmapHeight;
+        float[,] heightMap  = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);                //Create height map with size map
+        int width           = terrainData.heightmapWidth;                                                                           //
+        int height          = terrainData.heightmapHeight;                                                                          //
 
-        float windDir = 30;
-        float sinAngle = -Mathf.Sin(Mathf.Deg2Rad * windDir);
-        float cosAngle = Mathf.Cos(Mathf.Deg2Rad * windDir);
+        float windDir       = 30;                                                                                                   //
+        float sinAngle      = -Mathf.Sin(Mathf.Deg2Rad * windDir);                                                                  //
+        float cosAngle      = Mathf.Cos(Mathf.Deg2Rad * windDir);                                                                   //
 
-        for (int y = -(height - 1)*2; y <= height*2; y += 10)
+        for (int y = -(height - 1)*2; y <= height*2; y += 10)                                                                       //
         {
-            for (int x = -(width - 1)*2; x <= width*2; x += 1)
+            for (int x = -(width - 1)*2; x <= width*2; x += 1)                                                                      //
             {
-                float thisNoise = (float)Mathf.PerlinNoise(x * 0.06f, y * 0.06f) * 20 * erosionStrength;
-                int nx = (int)x;
-                int digY = y + (int)thisNoise;
-                int ny = (int)y + 5 + (int)thisNoise;
+                float thisNoise     = (float)Mathf.PerlinNoise(x * 0.06f, y * 0.06f) * 20 * erosionStrength;                        //
+                int nx              = (int)x;                                                                                       //
+                int digY            = y + (int)thisNoise;                                                                           //
+                int ny              = (int)y + 5 + (int)thisNoise;                                                                  //
 
-                Vector2 digCoords = new Vector2(x * cosAngle - digY * sinAngle, digY * cosAngle + x * sinAngle);
-                Vector2 pileCoords = new Vector2(nx * cosAngle - ny * sinAngle, ny * cosAngle + nx * sinAngle);
+                Vector2 digCoords   = new Vector2(x * cosAngle - digY * sinAngle, digY * cosAngle + x * sinAngle);                  //
+                Vector2 pileCoords  = new Vector2(nx * cosAngle - ny * sinAngle, ny * cosAngle + nx * sinAngle);                    //
 
-                if(!(digCoords.x < 0 || digCoords.x > (width - 1) || digCoords.y < 0 || digCoords.y > (height - 1) ||
+                if(!(digCoords.x < 0 || digCoords.x > (width - 1) || digCoords.y < 0 || digCoords.y > (height - 1) ||               //
                     pileCoords.x < 0 || pileCoords.x > (width - 1) || pileCoords.y < 0 || pileCoords.y > (height - 1)))
                 {
-                    heightMap[(int)digCoords.x, (int)digCoords.y] -= 0.001f;
-                    heightMap[(int)pileCoords.x, (int)pileCoords.y] += 0.001f;
+                    heightMap[(int)digCoords.x, (int)digCoords.y]   -= 0.001f;                                                      //
+                    heightMap[(int)pileCoords.x, (int)pileCoords.y] += 0.001f;                                                      //
                 }
             }
         }
-        terrainData.SetHeights(0, 0, heightMap);
+        terrainData.SetHeights(0, 0, heightMap);                                                                                    //
     }
 
-    float[,] tempHeightMap;
+    float[,] tempHeightMap;                                                                                         //Temporary heightmap used for the canyon function
+    //Creates a canyon in the terrain
     public void Canyon()
     {
-        float digDepth = 0.05f;
-        float bankSlope = 0.001f;
-        float maxDepth = 0;
-        tempHeightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+        float digDepth  = 0.05f;                                                                                    //How deep we should dig out the terrain
+        float bankSlope = 0.001f;                                                                                   //The slope of the canyon banks
+        float maxDepth   = 0;                                                                                       //The maximum depth we should dig the terrain to
+        tempHeightMap   = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);    //Initialize the size of the temporary height map
 
-        int cx = 1;
-        int cy = UnityEngine.Random.Range(10, terrainData.heightmapHeight - 10);
-        while(cy >= 0 && cy < terrainData.heightmapHeight && cx > 0 && cx < terrainData.heightmapWidth)
+        int cx = 1;                                                                                                 //Canyon starting x coordinate
+        int cy = UnityEngine.Random.Range(10, terrainData.heightmapHeight - 10);                                    //Canyon starting y coordinate
+        while(cy >= 0 && cy < terrainData.heightmapHeight && cx > 0 && cx < terrainData.heightmapWidth)             //Continue looping while the canyon is still 
         {
-            CanyonCrawler(cx, cy, tempHeightMap[cx, cy] - digDepth, bankSlope, maxDepth);
-            cx = cx + UnityEngine.Random.Range(1, 3);
-            cy = cy + UnityEngine.Random.Range(-2, 3);
+            CanyonCrawler(cx, cy, tempHeightMap[cx, cy] - digDepth, bankSlope, maxDepth);                           //Start the recursive function
+            cx = cx + UnityEngine.Random.Range(1, 3);                                                               //Advance the canyon along the x axis by a small random jump
+            cy = cy + UnityEngine.Random.Range(-2, 3);                                                              //Advance the canyon along the y axis by a small random jump
         }
-        terrainData.SetHeights(0, 0, tempHeightMap);
+        terrainData.SetHeights(0, 0, tempHeightMap);                                                                //Apply the erosion
     }
 
+    #endregion Main Erosion Functions
+
+    #region Support Functions
+
+    //RECURSIVE FUNCTION --- Creates canyons by digging out around a given point
     void CanyonCrawler(int x, int y, float height, float slope, float maxDepth)
     {
-        if (x < 0 || x >= terrainData.heightmapWidth) return; //Off x range of map
-        if (y < 0 || y >= terrainData.heightmapHeight) return; //Off y range of map
-        if (height <= maxDepth) return; //max depth has been reached
-        if (tempHeightMap[x, y] <= height) return; //ran into lower terrain
+        //EXIT STATEMENTS                                                                                           //EXIT WHEN:
+        if (x < 0 || x >= terrainData.heightmapWidth) return;                                                       //Off x range of map
+        if (y < 0 || y >= terrainData.heightmapHeight) return;                                                      //Off y range of map
+        if (height <= maxDepth) return;                                                                             //Max depth has been reached
+        if (tempHeightMap[x, y] <= height) return;                                                                  //Ran into lower terrain
 
-        tempHeightMap[x, y] = height;
+        tempHeightMap[x, y] = height;                                                                               //Set temporary heightmap at this position to the given height
 
-        CanyonCrawler(x + 1, y    , height + UnityEngine.Random.Range(slope, slope + 0.01f), slope, maxDepth);
+        //RECURSIVE CALLS
+        CanyonCrawler(x + 1, y    , height + UnityEngine.Random.Range(slope, slope + 0.01f), slope, maxDepth);      
         CanyonCrawler(x - 1, y    , height + UnityEngine.Random.Range(slope, slope + 0.01f), slope, maxDepth);
         CanyonCrawler(x + 1, y + 1, height + UnityEngine.Random.Range(slope, slope + 0.01f), slope, maxDepth);
         CanyonCrawler(x - 1, y + 1, height + UnityEngine.Random.Range(slope, slope + 0.01f), slope, maxDepth);
@@ -1078,32 +1089,35 @@ public class CustomTerrain : MonoBehaviour {
         CanyonCrawler(x    , y - 1, height + UnityEngine.Random.Range(slope, slope + 0.01f), slope, maxDepth);
     }
 
+    //Runs a single river path
     float[,] RunRiver(Vector3 dropletPosition, float[,] heightMap, float[,] erosionMap, int width, int height)
     {
-        while(erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] > 0)
+        while(erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] > 0)                                                   //While our current position on the erosion map is > 0
         {
-            List<Vector2> neighbors = GenerateNeighbors(dropletPosition, width, height);
-            neighbors.Shuffle();
-            bool foundLower = false;
-            foreach(Vector2 n in neighbors)
+            List<Vector2> neighbors = GenerateNeighbors(dropletPosition, width, height);                                        //Get the neighboring locations
+            neighbors.Shuffle();                                                                                                //Re-order them to allow for randomization of river paths. See Utils.cs for Shuffle function definition.
+            bool foundLower = false;                                                                                            //Set a flag for finding lower neighbors
+            foreach(Vector2 n in neighbors)                                                                                     //Loop through the list
             {
-                if(heightMap[(int)n.x, (int)n.y] < heightMap[(int)dropletPosition.x, (int)dropletPosition.y])
+                if(heightMap[(int)n.x, (int)n.y] < heightMap[(int)dropletPosition.x, (int)dropletPosition.y])                   //If the height of the neighbor is less than our current height
                 {
-                    erosionMap[(int)n.x, (int)n.y] = erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] - solubility;
-                    dropletPosition = n;
-                    foundLower = true;
-                    break;
+                    erosionMap[(int)n.x, (int)n.y] = erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] - solubility;   //Set the erosion map at our neighbors position to our current position on the erosion map - the solubility
+                    dropletPosition = n;                                                                                        //Set the current position to our neighbor's position
+                    foundLower = true;                                                                                          //Set the flag for a lower neighbor to true
+                    break;                                                                                                      //Break out of the foreach loop
                 }
             }
-            if(!foundLower)
+            if(!foundLower)                                                                                                     //If we haven't found a lower neighbor
             {
-                erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] -= solubility;
+                erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] -= solubility;                                       //Lower our current position on the erosion map by the solubility
             }
         }
-        return erosionMap;
+        return erosionMap;                                                                                                      //Return the erosion map
     }
 
-    #endregion
+    #endregion Support Functions
+
+    #endregion Erosion
 
     #endregion
     //============================================= Initialization Functions ==============================================
