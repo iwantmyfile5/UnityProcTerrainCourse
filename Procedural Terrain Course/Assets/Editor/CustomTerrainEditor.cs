@@ -4,14 +4,12 @@ using EditorGUITable;
 
 [CustomEditor(typeof(CustomTerrain))]
 [CanEditMultipleObjects]
-
-
 public class CustomTerrainEditor : Editor {
     //======================================= Variables =============================================
     #region Variables
 
     //--------------------------- Properties -------------------------------
-    #region Properties
+    #region Serialized Properties & GUI Table States
 
     //--------- Reset Terrain --------------
     SerializedProperty resetTerrain;
@@ -48,10 +46,6 @@ public class CustomTerrainEditor : Editor {
     //----------- Splat Maps -------------
     GUITableState splatMapTable;
     SerializedProperty splatHeights;
-    //SerializedProperty splatXScale;
-    //SerializedProperty splatYScale;
-    //SerializedProperty splatScalar;
-    //SerializedProperty splatOffset;
     //----------- Vegetation ------------
     SerializedProperty vegetation;
     SerializedProperty maxTrees;
@@ -76,24 +70,24 @@ public class CustomTerrainEditor : Editor {
     SerializedProperty droplets;
     SerializedProperty erosionSmoothAmount;
 
-
-
     #endregion Properties
-    //--------------------------- Foldouts --------------------------------
+
     #region Foldouts
 
-    bool showRandom = false;
-    bool showLoadHeights = false;
-    bool showPerlinNoise = false;
-    bool showMultiplePerlin = false;
-    bool showVoronoi = false;
-    bool showMPD = false;
-    bool showSplatMaps = false;
-    bool showHeights = false;
-    bool showVegetation = false;
-    bool showDetails = false;
-    bool showWater = false;
-    bool showErosion = false;
+    //--------------------------- Foldouts --------------------------------
+
+    bool showRandom                 = false;
+    bool showLoadHeights            = false;
+    bool showPerlinNoise            = false;
+    bool showMultiplePerlin         = false;
+    bool showVoronoi                = false;
+    bool showMPD                    = false;
+    bool showSplatMaps              = false;
+    bool showHeights                = false;
+    bool showVegetation             = false;
+    bool showDetails                = false;
+    bool showWater                  = false;
+    bool showErosion                = false;
 
     #endregion Foldouts
 
@@ -105,67 +99,62 @@ public class CustomTerrainEditor : Editor {
     void OnEnable()
     {
         //--------- Reset Terrain --------------
-        resetTerrain = serializedObject.FindProperty("resetTerrain");
+        resetTerrain                = serializedObject.FindProperty("resetTerrain");
         //--------- Random Heights --------------
-        randomHeightRange = serializedObject.FindProperty("randomHeightRange");
+        randomHeightRange           = serializedObject.FindProperty("randomHeightRange");
         //--------- Load Texture --------------
-        heightMapScale = serializedObject.FindProperty("heightMapScale");
-        heightMapImage = serializedObject.FindProperty("heightMapImage");
+        heightMapScale              = serializedObject.FindProperty("heightMapScale");
+        heightMapImage              = serializedObject.FindProperty("heightMapImage");
         //--------- Perlin Noise --------------
-        perlinXScale = serializedObject.FindProperty("perlinXScale");
-        perlinYScale = serializedObject.FindProperty("perlinYScale");
-        perlinOffsetX = serializedObject.FindProperty("perlinOffsetX");
-        perlinOffsetY = serializedObject.FindProperty("perlinOffsetY");
-        perlinOctaves = serializedObject.FindProperty("perlinOctaves");
-        perlinPersistance = serializedObject.FindProperty("perlinPersistance");
-        perlinHeightScale = serializedObject.FindProperty("perlinHeightScale");
+        perlinXScale                = serializedObject.FindProperty("perlinXScale");
+        perlinYScale                = serializedObject.FindProperty("perlinYScale");
+        perlinOffsetX               = serializedObject.FindProperty("perlinOffsetX");
+        perlinOffsetY               = serializedObject.FindProperty("perlinOffsetY");
+        perlinOctaves               = serializedObject.FindProperty("perlinOctaves");
+        perlinPersistance           = serializedObject.FindProperty("perlinPersistance");
+        perlinHeightScale           = serializedObject.FindProperty("perlinHeightScale");
         //---- Multiple Perline Noise --------
-        perlinParameterTable = new GUITableState("perlinParameterTable");
-        perlinParameters = serializedObject.FindProperty("perlinParameters");
+        perlinParameterTable        = new GUITableState("perlinParameterTable");
+        perlinParameters            = serializedObject.FindProperty("perlinParameters");
         //---------- Voronoi ----------------
-        voronoiPeaks = serializedObject.FindProperty("voronoiPeaks");
-        voronoiFallOff = serializedObject.FindProperty("voronoiFallOff");
-        voronoiDropOff = serializedObject.FindProperty("voronoiDropOff");
-        voronoiMinHeight = serializedObject.FindProperty("voronoiMinHeight");
-        voronoiMaxHeight = serializedObject.FindProperty("voronoiMaxHeight");
-        voronoiType = serializedObject.FindProperty("voronoiType");
+        voronoiPeaks                = serializedObject.FindProperty("voronoiPeaks");
+        voronoiFallOff              = serializedObject.FindProperty("voronoiFallOff");
+        voronoiDropOff              = serializedObject.FindProperty("voronoiDropOff");
+        voronoiMinHeight            = serializedObject.FindProperty("voronoiMinHeight");
+        voronoiMaxHeight            = serializedObject.FindProperty("voronoiMaxHeight");
+        voronoiType                 = serializedObject.FindProperty("voronoiType");
         //------- Midpoint Displacement -------
-        MPDheightMin = serializedObject.FindProperty("MPDheightMin");
-        MPDheightMax = serializedObject.FindProperty("MPDheightMax");
-        MPDheightDampenerPower = serializedObject.FindProperty("MPDheightDampenerPower");
-        MPDroughness = serializedObject.FindProperty("MPDroughness");
+        MPDheightMin                = serializedObject.FindProperty("MPDheightMin");
+        MPDheightMax                = serializedObject.FindProperty("MPDheightMax");
+        MPDheightDampenerPower      = serializedObject.FindProperty("MPDheightDampenerPower");
+        MPDroughness                = serializedObject.FindProperty("MPDroughness");
         //--------------- Smooth -------------
-        smoothIterations = serializedObject.FindProperty("smoothIterations");
+        smoothIterations            = serializedObject.FindProperty("smoothIterations");
         //----------- Splat Maps -------------
-        splatHeights = serializedObject.FindProperty("splatHeights");
-        //splatXScale = serializedObject.FindProperty("splatXScale");
-        //splatYScale = serializedObject.FindProperty("splatYScale");
-        //splatScalar = serializedObject.FindProperty("splatScalar");
-        //splatOffset = serializedObject.FindProperty("splatOffset");
-
+        splatHeights                = serializedObject.FindProperty("splatHeights");
         //--------- Height Map -------------
-        hmTexture = new Texture2D(513, 513, TextureFormat.ARGB32, false);
+        hmTexture                   = new Texture2D(513, 513, TextureFormat.ARGB32, false);
         //--------- Vegetation -------------
-        vegetation = serializedObject.FindProperty("vegetation");
-        maxTrees = serializedObject.FindProperty("maxTrees");
-        treeSpacing = serializedObject.FindProperty("treeSpacing");
+        vegetation                  = serializedObject.FindProperty("vegetation");
+        maxTrees                    = serializedObject.FindProperty("maxTrees");
+        treeSpacing                 = serializedObject.FindProperty("treeSpacing");
         //--------- Details ---------------
-        details = serializedObject.FindProperty("details");
-        maxDetails = serializedObject.FindProperty("maxDetails");
-        detailSpacing = serializedObject.FindProperty("detailSpacing");
+        details                     = serializedObject.FindProperty("details");
+        maxDetails                  = serializedObject.FindProperty("maxDetails");
+        detailSpacing               = serializedObject.FindProperty("detailSpacing");
         //-------- Water -------------
-        waterHeight = serializedObject.FindProperty("waterHeight");
-        waterGameObject = serializedObject.FindProperty("waterGameObject");
-        shoreLineMaterial = serializedObject.FindProperty("shoreLineMaterial");
+        waterHeight                 = serializedObject.FindProperty("waterHeight");
+        waterGameObject             = serializedObject.FindProperty("waterGameObject");
+        shoreLineMaterial           = serializedObject.FindProperty("shoreLineMaterial");
 
         //--------- Erosion --------------
-        erosionType = serializedObject.FindProperty("erosionType");
-        erosionStrength = serializedObject.FindProperty("erosionStrength");
-        erosionAmount = serializedObject.FindProperty("erosionAmount");
-        springsPerRiver = serializedObject.FindProperty("springsPerRiver");
-        solubility = serializedObject.FindProperty("solubility");
-        droplets = serializedObject.FindProperty("droplets");
-        erosionSmoothAmount = serializedObject.FindProperty("erosionSmoothAmount");
+        erosionType                 = serializedObject.FindProperty("erosionType");
+        erosionStrength             = serializedObject.FindProperty("erosionStrength");
+        erosionAmount               = serializedObject.FindProperty("erosionAmount");
+        springsPerRiver             = serializedObject.FindProperty("springsPerRiver");
+        solubility                  = serializedObject.FindProperty("solubility");
+        droplets                    = serializedObject.FindProperty("droplets");
+        erosionSmoothAmount         = serializedObject.FindProperty("erosionSmoothAmount");
     }
 
     Vector2 scrollPos; //Track scrollbar position
@@ -173,11 +162,11 @@ public class CustomTerrainEditor : Editor {
     {
         serializedObject.Update();
 
-        CustomTerrain terrain = (CustomTerrain)target;
+        CustomTerrain terrain       = (CustomTerrain)target;
 
         //Start Scrollbar
-        Rect r = EditorGUILayout.BeginVertical();
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(r.width), GUILayout.Height(r.height));
+        Rect r                      = EditorGUILayout.BeginVertical();
+        scrollPos                   = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(r.width), GUILayout.Height(r.height));
         EditorGUI.indentLevel++;
 
         // Reset terrain toggle button -- Controls whether functions will reset the terrain before running or

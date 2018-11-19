@@ -10,78 +10,78 @@ public class CustomTerrain : MonoBehaviour {
     //============================================= Terrain Variables =====================================================
     #region Terrain Variables
     //------------ Reset Terrain ----------------
-    public bool resetTerrain = true; // When true, all functions will overwrite existing terrain data
-                                     // When false, all functions will add heights to existing terrain data
+    public bool resetTerrain                                                = true; // When true, all functions will overwrite existing terrain data
+                                                                                    // When false, all functions will add heights to existing terrain data
     //----------- Textures ----------------------
     public Texture2D heightMapImage;
 
     //------------ Vectors ----------------------------
-    public Vector2 randomHeightRange = new Vector2(0, 0.3f);
-    public Vector3 heightMapScale = new Vector3(1, 1, 1);
+    public Vector2 randomHeightRange                                        = new Vector2(0, 0.3f);
+    public Vector3 heightMapScale                                           = new Vector3(1, 1, 1);
 
 
     //------------ Perlin Noise Variables ------------------------
-    public float perlinXScale = 0.01f;
-    public float perlinYScale = 0.01f;
-    public float perlinPersistance = 8f;
-    public float perlinHeightScale = 0.09f;
-    public int perlinOffsetX = 0;
-    public int perlinOffsetY = 0;
-    public int perlinOctaves = 3;
+    public float perlinXScale                                               = 0.01f;
+    public float perlinYScale                                               = 0.01f;
+    public float perlinPersistance                                          = 8f;
+    public float perlinHeightScale                                          = 0.09f;
+    public int perlinOffsetX                                                = 0;
+    public int perlinOffsetY                                                = 0;
+    public int perlinOctaves                                                = 3;
 
     //------------ Multiple Perlin Noise Variables ------------------------
     [System.Serializable]
     public class PerlinParameters
     {
-        public float mPerlinXScale = 0.01f;
-        public float mPerlinYScale = 0.01f;
-        public float mPerlinPersistance = 8f;
-        public float mPerlinHeightScale = 0.09f;
-        public int mPerlinOffsetX = 0;
-        public int mPerlinOffsetY = 0;
-        public int mPerlinOctaves = 3;
-        public bool remove = false;
+        public float mPerlinXScale                                          = 0.01f;
+        public float mPerlinYScale                                          = 0.01f;
+        public float mPerlinPersistance                                     = 8f;
+        public float mPerlinHeightScale                                     = 0.09f;
+        public int mPerlinOffsetX                                           = 0;
+        public int mPerlinOffsetY                                           = 0;
+        public int mPerlinOctaves                                           = 3;
+        public bool remove                                                  = false;
     }
 
-    public List<PerlinParameters> perlinParameters = new List<PerlinParameters>()
+    public List<PerlinParameters> perlinParameters                          = new List<PerlinParameters>()
     {
         new PerlinParameters()
     };
 
     //---------------- Voronoi ---------------------
-    public int voronoiPeaks = 5;
-    public float voronoiFallOff = 0.2f;
-    public float voronoiDropOff = 0.6f;
-    public float voronoiMinHeight = 0.1f;
-    public float voronoiMaxHeight = 0.5f;
-    public enum VoronoiType {  Linear = 0, Power = 1, Combined = 2, PowerSin = 3 }
-    public VoronoiType voronoiType = VoronoiType.Linear;
+    public enum VoronoiType { Linear = 0, Power = 1, Combined = 2, PowerSin = 3 }
+    public int voronoiPeaks                                                 = 5;
+    public float voronoiFallOff                                             = 0.2f;
+    public float voronoiDropOff                                             = 0.6f;
+    public float voronoiMinHeight                                           = 0.1f;
+    public float voronoiMaxHeight                                           = 0.5f;
+    public VoronoiType voronoiType                                          = VoronoiType.Linear;
 
     //--------------- Midpoint Displacement ----------
-    public float MPDheightMin = -10.0f;
-    public float MPDheightMax = 10.0f;
-    public float MPDheightDampenerPower = 2.0f;
-    public float MPDroughness = 2.0f;
+    public float MPDheightMin                                               = -10.0f;
+    public float MPDheightMax                                               = 10.0f;
+    public float MPDheightDampenerPower                                     = 2.0f;
+    public float MPDroughness                                               = 2.0f;
     //-------------- Smooth ------------
-    public int smoothIterations = 1;
+    public int smoothIterations                                             = 1;
     //------------- Splatmaps ---------------------
     [System.Serializable]
     public class SplatHeights
     {
-        public Texture2D texture = null;
-        public float minHeight = 0.1f;
-        public float maxHeight = 0.2f;
-        public float minSlope = 0;
-        public float maxSlope = 90;
-        public Vector2 tileOffset = new Vector2(0, 0);
-        public Vector2 tileSize = new Vector2(50, 50);
-        public float splatXScale = 0.01f;
-        public float splatYScale = 0.01f;
-        public float splatScalar = .02f;
-        public float splatOffset = 0.01f;
-        public bool remove = false;
+        public Texture2D texture                                            = null;
+        public float minHeight                                              = 0.1f;
+        public float maxHeight                                              = 0.2f;
+        public float minSlope                                               = 0;
+        public float maxSlope                                               = 90;
+        public Vector2 tileOffset                                           = new Vector2(0, 0);
+        public Vector2 tileSize                                             = new Vector2(50, 50);
+        public float splatXScale                                            = 0.01f;
+        public float splatYScale                                            = 0.01f;
+        public float splatScalar                                            = .02f;
+        public float splatOffset                                            = 0.01f;
+        public bool remove                                                  = false;
     }
-    public List<SplatHeights> splatHeights = new List<SplatHeights>()
+    public List<SplatHeights> splatHeights                                  = new List<SplatHeights>()
     {
         new SplatHeights()
     };
@@ -90,72 +90,72 @@ public class CustomTerrain : MonoBehaviour {
     public class Vegetation
     {
         public GameObject mesh;
-        public float minHeight = 0.1f;
-        public float maxHeight = 0.2f;
-        public float minSlope = 0;
-        public float maxSlope = 90;
-        public float minScale = 0.5f;
-        public float maxScale = 1;
-        public float bendFactor = 0.1f;
-        public Color color1 = Color.white;
-        public Color color2 = Color.white;
-        public Color lightColor = Color.white;
-        public float minRotation = 0;
-        public float maxRotation = 360;
-        public float density = 0.5f;
-        public bool remove = false;
+        public float minHeight                                              = 0.1f;
+        public float maxHeight                                              = 0.2f;
+        public float minSlope                                               = 0;
+        public float maxSlope                                               = 90;
+        public float minScale                                               = 0.5f;
+        public float maxScale                                               = 1;
+        public float bendFactor                                             = 0.1f;
+        public Color color1                                                 = Color.white;
+        public Color color2                                                 = Color.white;
+        public Color lightColor                                             = Color.white;
+        public float minRotation                                            = 0;
+        public float maxRotation                                            = 360;
+        public float density                                                = 0.5f;
+        public bool remove                                                  = false;
     }
-    public List<Vegetation> vegetation = new List<Vegetation>()
+    public List<Vegetation> vegetation                                      = new List<Vegetation>()
     {
         new Vegetation()
     };
 
-    public int maxTrees = 5000;
-    public int treeSpacing = 5;
+    public int maxTrees                                                     = 5000;
+    public int treeSpacing                                                  = 5;
 
     //----------- Details -----------------
     [System.Serializable]
     public class Detail
     {
-        public GameObject prototype = null;
-        public Texture2D prototypeTexture = null;
-        public float minHeight = 0.1f;
-        public float maxHeight = 0.2f;
-        public float minSlope = 0;
-        public float maxSlope = 90;
-        public float bendFactor = 0.1f;
-        public Color healthyColor = Color.white;
-        public Color dryColor = Color.white;
-        public Vector2 heightRange = new Vector2(1, 1);
-        public Vector2 widthRange = new Vector2(1, 1);
-        public float noiseSpread = 0.5f;
-        public float overlap = 0.01f;
-        public float feather = 0.5f;
-        public float density = 0.5f;
-        public bool remove = false;
+        public GameObject prototype                                         = null;
+        public Texture2D prototypeTexture                                   = null;
+        public float minHeight                                              = 0.1f;
+        public float maxHeight                                              = 0.2f;
+        public float minSlope                                               = 0;
+        public float maxSlope                                               = 90;
+        public float bendFactor                                             = 0.1f;
+        public Color healthyColor                                           = Color.white;
+        public Color dryColor                                               = Color.white;
+        public Vector2 heightRange                                          = new Vector2(1, 1);
+        public Vector2 widthRange                                           = new Vector2(1, 1);
+        public float noiseSpread                                            = 0.5f;
+        public float overlap                                                = 0.01f;
+        public float feather                                                = 0.5f;
+        public float density                                                = 0.5f;
+        public bool remove                                                  = false;
     }
-    public List<Detail> details = new List<Detail>()
+    public List<Detail> details                                             = new List<Detail>()
     {
         new Detail()
     };
 
-    public int maxDetails = 5000;
-    public int detailSpacing = 5;
+    public int maxDetails                                                   = 5000;
+    public int detailSpacing                                                = 5;
 
     //---------- Water -------------
-    public float waterHeight = 0.5f;
+    public float waterHeight                                                = 0.5f;
     public GameObject waterGameObject;
     public Material shoreLineMaterial;
 
     //--------- Erosion -----------
     public enum ErosionType {  Rain = 0, Thermal = 1, Tidal = 2, River = 3, Wind = 4, Canyon = 5 }
-    public ErosionType erosionType = ErosionType.Rain;
-    public float erosionStrength = 0.1f;
-    public float erosionAmount = 0.02f;
-    public int springsPerRiver = 5;
-    public float solubility = 0.01f;
-    public int droplets = 10;
-    public int erosionSmoothAmount = 5;
+    public ErosionType erosionType                                          = ErosionType.Rain;
+    public float erosionStrength                                            = 0.1f;
+    public float erosionAmount                                              = 0.02f;
+    public int springsPerRiver                                              = 5;
+    public float solubility                                                 = 0.01f;
+    public int droplets                                                     = 10;
+    public int erosionSmoothAmount                                          = 5;
 
     //----------- Terrain and TerrainData ---------------------
     public Terrain terrain;
@@ -897,8 +897,10 @@ public class CustomTerrain : MonoBehaviour {
 
     #region Erosion
 
+    //Apply selected erosion & smoothing
     public void Erode()
     {
+        //Check which erosion type the user wants to apply
              if (erosionType == ErosionType.Rain)
             Rain();
         else if (erosionType == ErosionType.Thermal)
@@ -911,7 +913,8 @@ public class CustomTerrain : MonoBehaviour {
             Wind();
         else if (erosionType == ErosionType.Canyon)
             Canyon();
-
+        
+        //Apply the selected smoothness iterations
         smoothIterations = erosionSmoothAmount;
         Smooth();
         
@@ -919,130 +922,136 @@ public class CustomTerrain : MonoBehaviour {
 
     #region Main Erosion Functions
 
+    //Apply rain erosion
     public void Rain()
     {
-        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
-        for (int i = 0; i < droplets; i++)
+        float[,] heightMap              = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);    //Get height map
+        for (int i = 0; i < droplets; i++)                                                                                          //Loop through for all desired droplets
         {
-            int randX = UnityEngine.Random.Range(0, terrainData.heightmapWidth);
-            int randY = UnityEngine.Random.Range(0, terrainData.heightmapHeight);
-            heightMap[randX, randY] -= erosionStrength;
+            int randX                   = UnityEngine.Random.Range(0, terrainData.heightmapWidth);                                  //Select a random x position
+            int randY                   = UnityEngine.Random.Range(0, terrainData.heightmapHeight);                                 //Select a random y position
+            heightMap[randX, randY]     -= erosionStrength;                                                                         //Lower the random position by the erosion strength amount
         }
-        terrainData.SetHeights(0, 0, heightMap);
+        terrainData.SetHeights(0, 0, heightMap);                                                                                    //Apply the erosion
     }
 
+    //Apply thermal (landslide) erosion TODO: Rename this function to make it more accurate
     public void Thermal()
     {
-        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+        float[,] heightMap                              = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);        //Get height map
 
-        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        //Loop through all positions in height map
+        for (int y = 0; y < terrainData.heightmapHeight; y++)                                                                                           //Loop through all y values
         {
-            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            for (int x = 0; x < terrainData.heightmapWidth; x++)                                                                                        //Loop through all x values
             {
-                Vector2 thisLocation = new Vector2(x, y);
-                List<Vector2> neighbors = GenerateNeighbors(thisLocation, terrainData.heightmapWidth, terrainData.heightmapHeight);
+                Vector2 thisLocation                    = new Vector2(x, y);                                                                            //Create Vector2 for this position
+                List<Vector2> neighbors                 = GenerateNeighbors(thisLocation, terrainData.heightmapWidth, terrainData.heightmapHeight);     //Create a list of this position's neighbors
 
-                foreach (Vector2 n in neighbors)
+                foreach (Vector2 n in neighbors)                                                                                                        //Loop through the list of neighbors
                 {
-                    if(heightMap[x,y] > heightMap[(int)n.x, (int)n.y] + erosionStrength)
+                    if(heightMap[x,y] > heightMap[(int)n.x, (int)n.y] + erosionStrength)                                                                //If current position's height is greater than the neighbor's height + erosion strength
                     {
-                        float currentHeight = heightMap[x, y];
-                        heightMap[x, y] -= currentHeight * erosionAmount;
-                        heightMap[(int)n.x, (int)n.y] += currentHeight * erosionAmount;
+                        float currentHeight             = heightMap[x, y];                                                                              //Create variable for current height
+                        heightMap[x, y]                 -= currentHeight * erosionAmount;                                                               //Subtract current height * erosion amount from current position
+                        heightMap[(int)n.x, (int)n.y]   += currentHeight * erosionAmount;                                                               //Add current height * erosion amount to neighbor's position
                     }
                 }
             }
         }
 
-        terrainData.SetHeights(0, 0, heightMap);
+        terrainData.SetHeights(0, 0, heightMap);                                                                                                        //Apply erosion
     }
 
+    //Apply tidal erosion
     public void Tidal()
     {
-        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
+        float[,] heightMap                              = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);        //Get height map
 
-        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        //Loop through all positions in the hieghtmap
+        for (int y = 0; y < terrainData.heightmapHeight; y++)                                                                                           //Loop through all y values
         {
-            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            for (int x = 0; x < terrainData.heightmapWidth; x++)                                                                                        //Loop through all x values
             {
-                Vector2 thisLocation = new Vector2(x, y);
-                List<Vector2> neighbors = GenerateNeighbors(thisLocation, terrainData.heightmapWidth, terrainData.heightmapHeight);
+                Vector2 thisLocation                    = new Vector2(x, y);                                                                            //Store current location
+                List<Vector2> neighbors                 = GenerateNeighbors(thisLocation, terrainData.heightmapWidth, terrainData.heightmapHeight);     //Create list of neighbors
 
-                foreach (Vector2 n in neighbors)
+                foreach (Vector2 n in neighbors)                                                                                                        //Loop through the list of neighbors
                 {
-                    if (heightMap[x, y] < waterHeight && heightMap[(int)n.x, (int)n.y] > waterHeight)
-                    {
-                        heightMap[x, y] = waterHeight;
-                        heightMap[(int)n.x, (int)n.y] = waterHeight;
+                    if (heightMap[x, y] < waterHeight && heightMap[(int)n.x, (int)n.y] > waterHeight)                                                   //If the position is on the shoreline (current height is less than water height & neighbor's height is greater than water height)
+                    {                                                                                                                                   //TODO: Change these to prevent weird texturing along shoreline
+                        heightMap[x, y]                 = waterHeight;                                                                                  //Set current height to water height
+                        heightMap[(int)n.x, (int)n.y]   = waterHeight;                                                                                  //Set neighbors height to water height
                     }
                 }
             }
         }
 
-        terrainData.SetHeights(0, 0, heightMap);
+        terrainData.SetHeights(0, 0, heightMap);                                                                                                        //Apply erosion
     }
 
+    //Apply river erosion
     public void River()
     {
-        float[,] heightMap = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);
-        float[,] erosionMap = new float[terrainData.heightmapWidth, terrainData.heightmapHeight];
+        float[,] heightMap  = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);                                                    //Set height map
+        float[,] erosionMap = new float[terrainData.heightmapWidth, terrainData.heightmapHeight];                                                                       //Create an erosion map
 
-        for (int i = 0; i < droplets; i++)
+        for (int i = 0; i < droplets; i++)                                                                                                                              //Loop through for all droplets the user wants to create
         {
-            Vector2 dropletPosition = new Vector2(UnityEngine.Random.Range(0, terrainData.heightmapWidth), UnityEngine.Random.Range(0, terrainData.heightmapHeight));
-            erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] = erosionStrength;
-            for (int j = 0; j < springsPerRiver; j++)
+            Vector2 dropletPosition = new Vector2(UnityEngine.Random.Range(0, terrainData.heightmapWidth), UnityEngine.Random.Range(0, terrainData.heightmapHeight));   //Randomly positon the droplet on the terrain
+            erosionMap[(int)dropletPosition.x, (int)dropletPosition.y] = erosionStrength;                                                                               //Set the erosion map value at the droplet position to erosion strength
+            for (int j = 0; j < springsPerRiver; j++)                                                                                                                   //Loop through for each river the user wants to create per droplet TODO: Fix naming on this variable to better reflect what it does
             {
-                erosionMap = RunRiver(dropletPosition, heightMap, erosionMap, terrainData.heightmapWidth, terrainData.heightmapHeight);
+                erosionMap = RunRiver(dropletPosition, heightMap, erosionMap, terrainData.heightmapWidth, terrainData.heightmapHeight);                                 //Call supporting function RunRiver to create a river for each spring
             }
         }
-
-        for (int y = 0; y < terrainData.heightmapHeight; y++)
+        //Loop through the entire heightmap
+        for (int y = 0; y < terrainData.heightmapHeight; y++)                                                                                                           //Loop through all y values for the heightmap
         {
-            for (int x = 0; x < terrainData.heightmapWidth; x++)
+            for (int x = 0; x < terrainData.heightmapWidth; x++)                                                                                                        //Loop through all x values for the heightmap
             {
-                if(erosionMap[x,y] > 0)
+                if(erosionMap[x,y] > 0)                                                                                                                                 //If the eroosion map is has a positive value for this position
                 {
-                    heightMap[x, y] -= erosionMap[x, y];
+                    heightMap[x, y] -= erosionMap[x, y];                                                                                                                //Subtract it from the heightmap
                 }
             }
         }
 
-        terrainData.SetHeights(0, 0, heightMap);
+        terrainData.SetHeights(0, 0, heightMap);                                                                                                                        //Apply the erosion
     }
 
     //Apply wind erosion
     public void Wind()
     {
         float[,] heightMap  = terrainData.GetHeights(0, 0, terrainData.heightmapWidth, terrainData.heightmapHeight);                //Create height map with size map
-        int width           = terrainData.heightmapWidth;                                                                           //
-        int height          = terrainData.heightmapHeight;                                                                          //
+        int width           = terrainData.heightmapWidth;                                                                           //Create width variable for easier typing
+        int height          = terrainData.heightmapHeight;                                                                          //Create height variable for easier typing
 
-        float windDir       = 30;                                                                                                   //
-        float sinAngle      = -Mathf.Sin(Mathf.Deg2Rad * windDir);                                                                  //
-        float cosAngle      = Mathf.Cos(Mathf.Deg2Rad * windDir);                                                                   //
+        float windDir       = 30;                                                                                                   //Set wind direction -- TODO: Change to serialized property for inspector
+        float sinAngle      = -Mathf.Sin(Mathf.Deg2Rad * windDir);                                                                  //Calculate sin of wind direction
+        float cosAngle      = Mathf.Cos(Mathf.Deg2Rad * windDir);                                                                   //Calculate cosin of wind direction
 
-        for (int y = -(height - 1)*2; y <= height*2; y += 10)                                                                       //
+        for (int y = -(height - 1)*2; y <= height*2; y += 10)                                                                       //Loop through y values, these need to be larger than normal since wind is at an angle. Skip 10 units per loop. TODO: Improve efficiency here
         {
-            for (int x = -(width - 1)*2; x <= width*2; x += 1)                                                                      //
+            for (int x = -(width - 1)*2; x <= width*2; x += 1)                                                                      //Loop through x values, these need to be larger than normal since wind is at an angle, could serialize the amount to skip each loop. TODO: Improve efficiency here
             {
-                float thisNoise     = (float)Mathf.PerlinNoise(x * 0.06f, y * 0.06f) * 20 * erosionStrength;                        //
-                int nx              = (int)x;                                                                                       //
-                int digY            = y + (int)thisNoise;                                                                           //
-                int ny              = (int)y + 5 + (int)thisNoise;                                                                  //
+                float thisNoise     = (float)Mathf.PerlinNoise(x * 0.06f, y * 0.06f) * 20 * erosionStrength;                        //Create noise value so we don't dig and build up in straight lines
+                int nx              = (int)x;                                                                                       //Set base pile x coordinate
+                int digY            = y + (int)thisNoise;                                                                           //Set base dig y coordinate
+                int ny              = (int)y + 5 + (int)thisNoise;                                                                  //Set base pile y coordinate
 
-                Vector2 digCoords   = new Vector2(x * cosAngle - digY * sinAngle, digY * cosAngle + x * sinAngle);                  //
-                Vector2 pileCoords  = new Vector2(nx * cosAngle - ny * sinAngle, ny * cosAngle + nx * sinAngle);                    //
+                Vector2 digCoords   = new Vector2(x * cosAngle - digY * sinAngle, digY * cosAngle + x * sinAngle);                  //Create vector2 for digging coordinates
+                Vector2 pileCoords  = new Vector2(nx * cosAngle - ny * sinAngle, ny * cosAngle + nx * sinAngle);                    //Create vector2 for pile coordinates
 
-                if(!(digCoords.x < 0 || digCoords.x > (width - 1) || digCoords.y < 0 || digCoords.y > (height - 1) ||               //
+                if(!(digCoords.x < 0 || digCoords.x > (width - 1) || digCoords.y < 0 || digCoords.y > (height - 1) ||               //Check if the both pile coords and dig coords are actually on the heightmap
                     pileCoords.x < 0 || pileCoords.x > (width - 1) || pileCoords.y < 0 || pileCoords.y > (height - 1)))
                 {
-                    heightMap[(int)digCoords.x, (int)digCoords.y]   -= 0.001f;                                                      //
-                    heightMap[(int)pileCoords.x, (int)pileCoords.y] += 0.001f;                                                      //
+                    heightMap[(int)digCoords.x, (int)digCoords.y]   -= 0.001f;                                                      //Remove a little height from dig coords TODO: Serialize this value so it's adjustable
+                    heightMap[(int)pileCoords.x, (int)pileCoords.y] += 0.001f;                                                      //Add a little height to pile coords TODO: Serialize this value so its adjustable
                 }
             }
         }
-        terrainData.SetHeights(0, 0, heightMap);                                                                                    //
+        terrainData.SetHeights(0, 0, heightMap);                                                                                    //Apply the erosion
     }
 
     float[,] tempHeightMap;                                                                                         //Temporary heightmap used for the canyon function
@@ -1132,15 +1141,13 @@ public class CustomTerrain : MonoBehaviour {
     {
         Debug.Log("Initialising Terrain Data");
         terrain = this.GetComponent<Terrain>();
-        //TODO: Change this to terrainData = terrain.terrainData for use with multiple terrain objects
-        terrainData = Terrain.activeTerrain.terrainData;
+        terrainData = Terrain.activeTerrain.terrainData; //TODO: Change this to terrainData = terrain.terrainData for use with multiple terrain objects
     }
 
     void Awake()
     {
         //Get tag database
-        SerializedObject tagManager = new SerializedObject(
-                                AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
+        SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
         SerializedProperty tagsProp = tagManager.FindProperty("tags");
 
         //Add new tags
@@ -1198,15 +1205,6 @@ public class CustomTerrain : MonoBehaviour {
         return -1;
 
     }
-
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    
     #endregion
 }

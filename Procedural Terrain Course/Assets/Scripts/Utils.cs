@@ -16,17 +16,17 @@ public static class Utils {
     /// <returns></returns>
 	public static float fBM(float x, float y, int oct, float persistance)
     {
-        float total = 0;
-        float frequency = 1;
-        float amplitude = 1;
-        float maxValue = 0;
+        float total         = 0;
+        float frequency     = 1;
+        float amplitude     = 1;
+        float maxValue      = 0;
 
         for (int i = 0; i < oct; i++)
         {
-            total += Mathf.PerlinNoise((x) * frequency, (y) * frequency) * amplitude;
-            maxValue += amplitude;
-            amplitude *= persistance;
-            frequency *= 2;
+            total           += Mathf.PerlinNoise((x) * frequency, (y) * frequency) * amplitude;
+            maxValue        += amplitude;
+            amplitude       *= persistance;
+            frequency       *= 2;
         }
         //Brings result into the range of 0 to 1
         return total / maxValue;
@@ -46,7 +46,7 @@ public static class Utils {
         return (value - originalMin) * (targetMax - targetMin) / (originalMax - originalMin) + targetMin;
     }
 
-    public static System.Random r = new System.Random();
+    public static System.Random r = new System.Random(); //Random object for Shuffle function
     /// <summary>
     /// Fisher-Yates Shuffle. Shuffles the order of a list.
     /// </summary>
@@ -54,11 +54,11 @@ public static class Utils {
     /// <param name="list"></param>
     public static void Shuffle<T>(this IList<T> list)
     {
-        int n = list.Count;
+        int n       = list.Count;
         while(n > 1)
         {
             n--;
-            int k = r.Next(n + 1);
+            int k   = r.Next(n + 1);
             T value = list[k];
             list[k] = list[n];
             list[n] = value;
