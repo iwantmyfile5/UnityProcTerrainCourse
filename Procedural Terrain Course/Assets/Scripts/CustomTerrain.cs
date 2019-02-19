@@ -157,6 +157,20 @@ public class CustomTerrain : MonoBehaviour {
     public int droplets                                                     = 10;
     public int erosionSmoothAmount                                          = 5;
 
+    //--------- Clouds ------------
+    public int numClouds                                                    = 1;
+    public int particlesPerCloud                                            = 50;
+    public float cloudParticleSize                                          = 5;
+    public Vector3 cloudSize                                                = new Vector3(1, 1, 1);
+    public Material cloudMaterial;
+    public Material cloudShadowMaterial;
+    public Color cloudColor                                                 = Color.white;
+    public Color cloudLining                                                = Color.gray;
+    public float minCloudSpeed                                              = 0.2f;
+    public float maxCloudSpeed                                              = 0.5f;
+    public float distanceTravelled                                          = 500.0f;
+
+
     //----------- Terrain and TerrainData ---------------------
     public Terrain terrain;
     public TerrainData terrainData;
@@ -1131,6 +1145,54 @@ public class CustomTerrain : MonoBehaviour {
     #endregion Support Functions
 
     #endregion Erosion
+
+    #region Clouds
+
+    public void GenerateClouds()
+    {
+        GameObject cloudManager = GameObject.Find("CloudManager");
+        if(!cloudManager)
+        {
+            cloudManager                        = new GameObject();
+            cloudManager.name                   = "CloudManager";
+            cloudManager.AddComponent<CloudManager>();
+            cloudManager.transform.position     = this.transform.position;
+        }
+
+        GameObject[] allClouds = GameObject.FindGameObjectsWithTag("Cloud");
+        for (int i = 0; i < allClouds.Length; i++)
+        {
+            DestroyImmediate(allClouds[i]);
+        }
+
+        for (int c = 0; c < numClouds; c++)
+        {
+            GameObject cloudGO                  = new GameObject();
+            cloudGO.name                        = "Cloud" + c;
+            cloudGO.tag                         = "Cloud";
+
+            cloudGO.transform.rotation          = cloudManager.transform.rotation;
+            cloudGO.transform.position          = cloudManager.transform.position;
+
+            ParticleSystem cloudSystem          = cloudGO.AddComponent<ParticleSystem>();
+            Renderer cloudRend                  = cloudGO.GetComponent<Renderer>();
+            cloudRend.material                  = cloudMaterial;
+            cloudRend.shadowCastingMode         = UnityEngine.Rendering.ShadowCastingMode.Off;
+            cloudRend.receiveShadows            = false;
+
+            ParticleSystem.MainModule main      = cloudSystem.main;
+            main.loop                           = false;
+            main.startLifetime                  = Mathf.Infinity;
+            main.startSpeed                     = 0;
+            main.startSize                      = cloudParticleSize;
+            main.startColor                     = Color.white;
+
+            cloudGO.transform.parent            = cloudManager.transform;
+            cloudGO.transform.localScale        = new Vector3(1, 1, 1);
+        } 
+    }
+
+    #endregion Clouds
 
     #endregion
     //============================================= Initialization Functions ==============================================
